@@ -1,0 +1,23 @@
+image: maven:3.6.1-jdk-11
+
+stages:
+  - build
+  - docs
+
+build:
+  stage: build
+  script:
+    - mvn package
+  artifacts:
+    paths:
+      - target/*.jar
+
+docs:
+  stage: docs
+  script:
+    - mvn javadoc:javadoc
+  only:
+    - merge_request
+  artifacts:
+    paths:
+      - target/site
