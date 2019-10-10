@@ -19,10 +19,10 @@
 
 ### :hammer: Development
 
-Starting the development server on port 5000.
+Compile and run the project.
 
 ```
-mvn -Dserver.port=5000 spring-boot:run
+mvn compile exec:java
 ```
 
 Running tests.
@@ -38,6 +38,10 @@ Bundling the app into jar file.
 ```
 mvn package
 ```
+
+### :hammer_and_wrench: Tools
+
+For the design it's recommended to install JavaFX Scene Builder.
 
 ## :busts_in_silhouette: Team
 
