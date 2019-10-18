@@ -13,22 +13,39 @@
     <description>Share Your Media</description>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
+        <project.encoding>UTF-8</project.encoding>
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-base -->
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
+            <artifactId>javafx-base</artifactId>
             <version>13</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
+            <version>13</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>13</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-graphics -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>13</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-media -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
             <version>13</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
@@ -46,6 +63,19 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.encoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <encoding>${project.encoding}</encoding>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
