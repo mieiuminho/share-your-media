@@ -5,18 +5,17 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 
-public class Controller {
+public final class Controller {
     @FXML
-    public MenuItem mni_logout;
+    private MenuItem logoutMenuItem;
 
     @FXML
-    public Button btn_add_friends;
+    private Button addFriendsButton;
 
     public void logout() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Login Error");
         alert.setHeaderText("Invalid credentials");
-        alert.getDialogPane().setPrefSize(480, 320);
         alert.showAndWait();
     }
 
