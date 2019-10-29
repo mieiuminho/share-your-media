@@ -2,6 +2,7 @@ image: maven:3.6.1-jdk-11
 
 stages:
   - build
+  - style
   - docs
 
 build:
@@ -11,6 +12,11 @@ build:
   artifacts:
     paths:
       - target/*.jar
+
+style:
+  stage: style
+  script:
+    - mvn formatter:validate
 
 docs:
   stage: docs

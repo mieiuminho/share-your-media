@@ -31,6 +31,12 @@ Running tests.
 mvn test
 ```
 
+Format the code accordingly to common guide lines.
+
+```
+mvn formatter:format
+```
+
 ### :package: Deployment
 
 Bundling the app into jar file.
