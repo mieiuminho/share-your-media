@@ -8,6 +8,14 @@ public abstract class User {
     private String password;
     private String salt;
 
+    /**
+     * Constructor to recreate a User.
+     *
+     * @param email User's email.
+     * @param name User's name.
+     * @param password User's hashed password.
+     * @param salt User's salt for password checking.
+     */
     public User(final String email, final String name, final String password, final String salt) {
         this.email = email;
         this.name = name;
@@ -16,10 +24,11 @@ public abstract class User {
     }
 
     /**
+     * Constructor to create a new User from scratch.
      *
-     * @param email
-     * @param name
-     * @param input
+     * @param email User's email.
+     * @param name User's name.
+     * @param input User's desired password.
      */
     @SuppressWarnings("checkstyle:MagicNumber")
     public User(final String email, final String name, final String input) {
@@ -30,30 +39,33 @@ public abstract class User {
     }
 
     /**
+     * Provides the User's username.
      *
-     * @return
+     * @return User's username.
      */
     public String getEmail() {
         return this.email;
     }
 
     /**
+     * Allows to set the User's username.
      *
+     * @param email Desired username.
      */
     public void setEmail(final String email) {
         this.email = email;
     }
 
     /**
+     * Provides the User's email.
      *
-     * @return
+     * @return User's email.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     *
      * @param name
      */
     public void setName(final String name) {
@@ -61,15 +73,15 @@ public abstract class User {
     }
 
     /**
+     * Provides the User's hashed password.
      *
-     * @return
+     * @return User's hashed password.
      */
     public String getPassword() {
         return this.password;
     }
 
     /**
-     *
      * @param password
      */
     public void setPassword(final String password) {
@@ -77,15 +89,15 @@ public abstract class User {
     }
 
     /**
+     * Provides the salt used to hash the User's password.
      *
-     * @return
+     * @return User's salt.
      */
     public String getSalt() {
         return this.salt;
     }
 
     /**
-     *
      * @param salt
      */
     public void setSalt(final String salt) {
@@ -93,7 +105,6 @@ public abstract class User {
     }
 
     /**
-     *
      * @param input
      * @return
      */

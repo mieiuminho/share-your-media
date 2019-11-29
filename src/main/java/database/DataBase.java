@@ -11,6 +11,15 @@ public final class DataBase {
     private static String user = System.getenv("SYM_DATABASE_USER");
     private static String password = System.getenv("SYM_DATABASE_PASSWORD");
 
+    static {
+        DataBase.startConnection();
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private DataBase() {
     }
 
