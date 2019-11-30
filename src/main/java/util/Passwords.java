@@ -6,9 +6,13 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Random;
 
-public class Passwords {
+public final class Passwords {
     private static final Random RANDOM = new SecureRandom();
 
+    private Passwords() {
+    }
+
+    @SuppressWarnings("checkstyle:MagicNumber")
     public static String getSalt(final int length) {
         StringBuilder salt = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
