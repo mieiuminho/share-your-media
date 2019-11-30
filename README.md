@@ -17,6 +17,18 @@
 
 ## :rocket: Getting Started
 
+This project uses a MySQL database for data persistence. You should have MySQL
+up and running. For setting up a successful connection the environment variables
+must be set.
+
+```bash
+cp .env.sample .env
+```
+
+After this, you must fill in the fields correctly and export them in your
+environment. Checkout [direnv](https://direnv.net/) for your shell and
+[EnvFile](https://github.com/Ashald/EnvFile) for IntelliJ.
+
 ### :hammer: Development
 
 Compile and run the project in a clean build.
