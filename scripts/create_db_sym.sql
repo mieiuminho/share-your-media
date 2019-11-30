@@ -9,7 +9,9 @@ CREATE TABLE REGULAR_USERS
     name     char(255) NOT NULL,
     password char(88)  NOT NULL,
     salt     char(8)   NOT NULL,
-    PRIMARY KEY (email)
+    PRIMARY KEY (email),
+    UNIQUE (email),
+    INDEX (email)
 );
 
 CREATE TABLE ADMIN_USERS
@@ -18,7 +20,9 @@ CREATE TABLE ADMIN_USERS
     name     char(255) NOT NULL,
     password char(88)  NOT NULL,
     salt     char(8)   NOT NULL,
-    PRIMARY KEY (email)
+    PRIMARY KEY (email),
+    UNIQUE (email),
+    INDEX (email)
 );
 
 show tables;
