@@ -29,6 +29,7 @@ test:
   stage: test
   script:
     - mvn $MAVEN_CLI_OPTS test -Dtest='!database/*'
+    - cat target/site/jacoco/index.html
 
 format:
   stage: style
