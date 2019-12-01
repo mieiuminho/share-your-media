@@ -1,12 +1,19 @@
 package model;
 
+import database.DataClass;
 import util.Passwords;
 
-public abstract class User {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class User implements DataClass<String> {
     private String email;
     private String name;
     private String password;
     private String salt;
+
+    public User() {
+    }
 
     /**
      * Constructor to recreate a User.
@@ -36,6 +43,18 @@ public abstract class User {
         this.name = name;
         this.salt = Passwords.getSalt(8);
         this.password = Passwords.generate(input, salt);
+    }
+
+    /**
+     *
+     * @param values
+     */
+    @SuppressWarnings("checkstyle:MagicNumber")
+    public User(final List<String> values) {
+        this.email = values.get(0);
+        this.name = values.get(1);
+        this.password = values.get(2);
+        this.salt = values.get(3);
     }
 
     /**
@@ -114,6 +133,29 @@ public abstract class User {
 
     /**
      *
+     * @param row
+     * @return
+     */
+    @Override
+    public abstract DataClass<String> fromRow(List<String> row);
+
+    /**
+     *
+     * @return
+     */
+    @SuppressWarnings("checkstyle:MagicNumber")
+    @Override
+    public List<String> toRow() {
+        List<String> result = new ArrayList<>(4);
+        result.add(this.getEmail());
+        result.add(this.getName());
+        result.add(this.getPassword());
+        result.add(this.getSalt());
+        return result;
+    }
+
+    /**
+     *
      */
     @Override
     public boolean equals(final Object o) {
@@ -144,5 +186,15 @@ public abstract class User {
         result = 31 * result + this.getPassword().hashCode();
         result = 31 * result + this.getSalt().hashCode();
         return result;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "{" + "email='" + email + '\'' + ", name='" + name + '\'' + ", password='" + password + '\'' + ", salt='"
+                + salt + '\'';
     }
 }

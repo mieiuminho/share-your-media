@@ -2,7 +2,7 @@ package exceptions;
 
 public class NoSuchMediaFile extends Exception {
 
-    public NoSuchMediaFile(String message) {
+    public NoSuchMediaFile(final String message) {
         super(message);
     }
 }

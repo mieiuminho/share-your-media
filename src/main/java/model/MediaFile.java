@@ -1,19 +1,23 @@
 package model;
 
+import database.DataClass;
+
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public final class MediaFile {
+public final class MediaFile implements DataClass<String> {
 
     private String name;
     private String artist;
+    // TODO: Falta ver as tabelas para as categorias e uploaders
     private Set<String> categories;
     private Set<String> uploaders;
 
     /**
      * Constructor
-     * 
+     *
      * @param name MediaFile's name.
      * @param artist MediaFile's artist.
      * @param categories MediaFile's categories.
@@ -28,9 +32,12 @@ public final class MediaFile {
         this.uploaders.add(uploader);
     }
 
+    public MediaFile() {
+    }
+
     /**
      * Provides the MediaFile's name.
-     * 
+     *
      * @return MediaFile's name.
      */
     public String getName() {
@@ -39,7 +46,7 @@ public final class MediaFile {
 
     /**
      * Provides the MediaFile's artist.
-     * 
+     *
      * @return MediaFile's artist.
      */
     public String getArtist() {
@@ -48,7 +55,7 @@ public final class MediaFile {
 
     /**
      * Provides the MediaFile's categories.
-     * 
+     *
      * @return MediaFile's categories.
      */
     public Set<String> getCategories() {
@@ -57,7 +64,7 @@ public final class MediaFile {
 
     /**
      * Provides the MediaFile's uploaders.
-     * 
+     *
      * @return MediaFile's uploaders.
      */
     public Set<String> getUploaders() {
@@ -66,7 +73,7 @@ public final class MediaFile {
 
     /**
      * Allows to set the MediaFile's name.
-     * 
+     *
      * @param name Desired name.
      */
     public void setName(final String name) {
@@ -75,7 +82,7 @@ public final class MediaFile {
 
     /**
      * Allows to set the MediaFile's artist.
-     * 
+     *
      * @param artist Desired artist name.
      */
     public void setArtist(final String artist) {
@@ -84,7 +91,7 @@ public final class MediaFile {
 
     /**
      * Allows to set the MediaFile's categories.
-     * 
+     *
      * @param categories Desired categories.
      */
     public void setCategories(final Set<String> categories) {
@@ -93,7 +100,7 @@ public final class MediaFile {
 
     /**
      * Allows to set the MediaFile's uploaders.
-     * 
+     *
      * @param uploaders Desired uploaders.
      */
     public void setUploaders(final Set<String> uploaders) {
@@ -102,7 +109,7 @@ public final class MediaFile {
 
     /**
      * Removes an uploader from the uploaders Set.
-     * 
+     *
      * @param uploader Email of the uploader to remove.
      */
     public void removeUploader(final String uploader) {
@@ -113,11 +120,21 @@ public final class MediaFile {
 
     /**
      * Change MediaFile's categories.
-     * 
+     *
      * @param newCategorias New categories.
      */
     public void bindCategories(final Collection<String> newCategorias) {
         this.categories.clear();
         this.categories.addAll(newCategorias);
+    }
+
+    @Override
+    public DataClass<String> fromRow(List<String> row) {
+        return null;
+    }
+
+    @Override
+    public List<String> toRow() {
+        return null;
     }
 }

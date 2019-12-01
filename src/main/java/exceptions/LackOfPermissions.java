@@ -2,7 +2,7 @@ package exceptions;
 
 public class LackOfPermissions extends Exception {
 
-    public LackOfPermissions(String message) {
+    public LackOfPermissions(final String message) {
         super(message);
     }
 }

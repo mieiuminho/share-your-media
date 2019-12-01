@@ -44,8 +44,14 @@ INSERT INTO ADMIN_USERS (email, name, password, salt)
 VALUES ('ricardo@uminho.pt', 'Ricardo Silva',
         'mKObJ1CxEVGXcgVY1ff5jq53SHnM392bd34MtpA5nt86gJfPkVQY3eYd8D45iSDwIGjjCqOAU1QqRszXttHs0w==', 'sqfkgrsg');
 
+INSERT INTO MEDIAFILES (name, artist)
+VALUES ('Born To Die', 'Lana Del Rey');
+
 select *
 from REGULAR_USERS;
 
 select *
 from ADMIN_USERS;
+
+select *
+from MEDIAFILES;
