@@ -18,12 +18,28 @@ public final class DataBase {
         try {
             Class.forName(driver);
             connection = DriverManager.getConnection(url + "?user=" + user + "&password=" + password);
+            connection.setAutoCommit(false);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
 
     public static Connection getConnection() {
+        try {
+            if (connection.isClosed()) {
+                DataBase.startConnection();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return connection;
+    }
+
+    public static void stopConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
