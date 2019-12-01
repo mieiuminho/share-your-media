@@ -1,19 +1,39 @@
+import controller.*;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.MediaCenter;
+
+import java.io.IOException;
 
 public final class App extends Application {
-    public static final int WINDOW_WIDTH = 1280;
-    public static final int WINDOW_HEIGHT = 800;
+    private Helper helper;
+    private MediaCenter model;
+
+    public App() throws IOException {
+        this.helper = new Helper();
+        this.model = new MediaCenter();
+    }
+
+    @Override
+    public void init() throws Exception {
+        super.init();
+    }
 
     @SuppressWarnings("checkstyle:FinalParameters")
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("views/main.fxml"));
-        primaryStage.setTitle("Share Your Media");
-        primaryStage.setScene(new Scene(root, App.WINDOW_WIDTH, App.WINDOW_HEIGHT));
-        primaryStage.show();
+    public void start(Stage stage) throws Exception {
+        Helper.init(stage);
+        stage.setTitle("Share Your Media");
+        this.helper.redirectTo("welcome");
+        stage.show();
+        Welcome.init(this.helper, this.model);
+        Main.init(this.helper, this.model);
+        Login.init(this.helper, this.model);
+        Admin.init(this.helper, this.model);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        super.stop();
     }
 
     @SuppressWarnings("checkstyle:FinalParameters")

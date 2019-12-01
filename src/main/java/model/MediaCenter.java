@@ -23,9 +23,26 @@ public final class MediaCenter {
     }
 
     private String loggedIn;
+    private boolean isAdmin;
     private AdminUserDAO admins;
     private RegularUserDAO users;
     private MediaFileDAO mediafiles;
+
+    public MediaCenter() {
+        this.loggedIn = null;
+        this.isAdmin = false;
+        this.admins = new AdminUserDAO();
+        this.users = new RegularUserDAO();
+        this.mediafiles = new MediaFileDAO();
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.isAdmin = admin;
+    }
 
     public void loginUser(final String email, final String password) throws AuthenticationException {
         if (this.users.containsKey(email)) {

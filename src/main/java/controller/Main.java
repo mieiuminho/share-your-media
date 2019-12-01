@@ -4,8 +4,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
+import model.MediaCenter;
 
-public final class Controller {
+public final class Main {
+    private static Helper helper;
+    private static MediaCenter model;
+
+    public static void init(final Helper hlpr, final MediaCenter mdl) {
+        Main.helper = hlpr;
+        Main.model = mdl;
+    }
+
     @FXML
     private MenuItem logoutMenuItem;
 
@@ -13,13 +22,13 @@ public final class Controller {
     private Button addFriendsButton;
 
     public void logout() {
+        helper.redirectTo("welcome");
+    }
+
+    public void addFriends() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Login Error");
         alert.setHeaderText("Invalid credentials");
         alert.showAndWait();
-    }
-
-    public void addFriends() {
-        new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to add friends?").showAndWait();
     }
 }
