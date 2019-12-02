@@ -2,10 +2,7 @@ package model;
 
 import database.DataClass;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class MediaFile implements DataClass<String> {
 
@@ -33,6 +30,11 @@ public final class MediaFile implements DataClass<String> {
     }
 
     public MediaFile() {
+    }
+
+    public MediaFile(final List<String> values) {
+        this.name = values.get(0);
+        this.artist = values.get(1);
     }
 
     /**
@@ -130,11 +132,14 @@ public final class MediaFile implements DataClass<String> {
 
     @Override
     public DataClass<String> fromRow(List<String> row) {
-        return null;
+        return new MediaFile(row);
     }
 
     @Override
     public List<String> toRow() {
-        return null;
+        List<String> row = new ArrayList<>();
+        row.add(this.name);
+        row.add(this.artist);
+        return row;
     }
 }

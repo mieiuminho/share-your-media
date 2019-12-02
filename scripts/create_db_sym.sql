@@ -25,11 +25,12 @@ CREATE TABLE ADMIN_USERS
     INDEX (email)
 );
 
+drop table MEDIAFILES;
 CREATE TABLE MEDIAFILES
 (
     name   char(255) NOT NULL,
     artist char(255) NOT NULL,
-    PRIMARY KEY (name)
+    PRIMARY KEY (name, artist)
 );
 
 show tables;

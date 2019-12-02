@@ -14,8 +14,8 @@ public final class AdminUserDAO extends DataAcessObject<String, AdminUser> {
         return super.get(key);
     }
 
-    public AdminUser put(final String key, final AdminUser value) {
-        return super.put(key, value);
+    public AdminUser put(final AdminUser value) {
+        return super.put(value, value.getEmail());
     }
 
     public AdminUser remove(final String key) {

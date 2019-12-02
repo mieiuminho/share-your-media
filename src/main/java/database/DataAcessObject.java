@@ -41,11 +41,10 @@ public abstract class DataAcessObject<K, O> {
         int r = 0;
 
         try {
-            PreparedStatement pst = connection
-                    .prepareStatement("SELECT " + this.columns.get(0) + " FROM " + this.table);
+            PreparedStatement pst = connection.prepareStatement("SELECT COUNT(*) FROM " + this.table);
             ResultSet rs = pst.executeQuery();
             while (rs.next())
-                r++;
+                r = rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,14 +74,25 @@ public abstract class DataAcessObject<K, O> {
      * @param key
      * @return
      */
-    public boolean containsKey(final Object key) {
+    public boolean containsKey(final Object... key) {
         Connection connection = DataBase.getConnection();
         boolean r = false;
 
         try {
-            PreparedStatement pst = connection.prepareStatement(
-                    "SELECT " + this.columns.get(0) + " FROM " + this.table + " WHERE " + this.columns.get(0) + " = ?");
-            this.setValue(pst, 1, key);
+            String stm = "SELECT * FROM " + this.table + " WHERE ";
+            int x = 0;
+            for (Object ignored : key) {
+                if (x != 0)
+                    stm += " AND ";
+
+                stm += this.columns.get(x++) + " = ? ";
+            }
+
+            PreparedStatement pst = connection.prepareStatement(stm);
+            x = 1;
+            for (Object k : key) {
+                this.setValue(pst, x++, k);
+            }
             ResultSet rs = pst.executeQuery();
             r = rs.next();
         } catch (SQLException e) {
@@ -96,14 +106,24 @@ public abstract class DataAcessObject<K, O> {
      * @param key
      * @return
      */
-    public O get(final Object key) {
+    public O get(final Object... key) {
         Connection connection = DataBase.getConnection();
         O o = null;
-
         try {
-            PreparedStatement pst = connection
-                    .prepareStatement("SELECT * FROM " + this.table + " WHERE " + this.columns.get(0) + " = ?");
-            this.setValue(pst, 1, key);
+            String stm = "SELECT * FROM " + this.table + " WHERE ";
+            int x = 0;
+            for (Object ignored : key) {
+                if (x != 0)
+                    stm += " AND ";
+
+                stm += this.columns.get(x++) + " = ? ";
+            }
+
+            PreparedStatement pst = connection.prepareStatement(stm);
+            x = 1;
+            for (Object k : key) {
+                this.setValue(pst, x++, k);
+            }
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
@@ -127,16 +147,27 @@ public abstract class DataAcessObject<K, O> {
      * @param value
      * @return
      */
-    public O put(final Object key, final Object value) {
+    public O put(final Object value, final Object... key) {
         Connection connection = DataBase.getConnection();
         try {
             O result = this.get(key);
-            PreparedStatement pst = connection
-                    .prepareStatement("DELETE FROM " + this.table + " WHERE " + this.columns.get(0) + " = ?");
-            this.setValue(pst, 1, key);
+            String stm = "DELETE FROM " + this.table + " WHERE ";
+            int x = 0;
+            for (Object ignored : key) {
+                if (x != 0)
+                    stm += " AND ";
+
+                stm += this.columns.get(x++) + " = ? ";
+            }
+
+            PreparedStatement pst = connection.prepareStatement(stm);
+            x = 1;
+            for (Object k : key) {
+                this.setValue(pst, x++, k);
+            }
             pst.executeUpdate();
 
-            String stm = "INSERT INTO " + this.table + " VALUES (";
+            stm = "INSERT INTO " + this.table + " VALUES (";
 
             int i;
             DataClass<K> dataClass = (DataClass<K>) value;
@@ -165,16 +196,27 @@ public abstract class DataAcessObject<K, O> {
      * @param key
      * @return
      */
-    public O remove(final Object key) {
+    public O remove(final Object... key) {
         Connection connection = DataBase.getConnection();
         O o = null;
 
         try {
             o = this.get(key);
             if (o != null) {
-                PreparedStatement pst = connection
-                        .prepareStatement("DELETE FROM " + this.table + " WHERE " + this.columns.get(0) + " = ?");
-                this.setValue(pst, 1, key);
+                String stm = "DELETE FROM " + this.table + " WHERE ";
+                int x = 0;
+                for (Object ignored : key) {
+                    if (x != 0)
+                        stm += " AND ";
+
+                    stm += this.columns.get(x++) + " = ? ";
+                }
+
+                PreparedStatement pst = connection.prepareStatement(stm);
+                x = 1;
+                for (Object k : key) {
+                    this.setValue(pst, x++, k);
+                }
                 pst.executeUpdate();
                 connection.commit();
             }

@@ -1,6 +1,7 @@
 package database;
 
 import model.AdminUser;
+import model.MediaFile;
 import model.RegularUser;
 import org.junit.*;
 import util.Passwords;
@@ -11,6 +12,7 @@ import java.util.List;
 public class DataAcessObjectsTests {
     private static AdminUserDAO admins = new AdminUserDAO();
     private static RegularUserDAO users = new RegularUserDAO();
+    private static MediaFileDAO mediafiles = new MediaFileDAO();
     private static List<AdminUser> adminsList = new ArrayList<>();
     private static List<RegularUser> usersList = new ArrayList<>();
 
@@ -70,7 +72,7 @@ public class DataAcessObjectsTests {
         String salt = "vsoptxmt";
         RegularUser user1 = new RegularUser(email, name, Passwords.generate(password, salt), salt);
         RegularUser user2 = users.get(email);
-        users.put(email, user2);
+        users.put(user2);
         Assert.assertEquals(user1, user2);
     }
 
@@ -95,7 +97,7 @@ public class DataAcessObjectsTests {
         RegularUser user = users.get(email);
         users.remove(email);
         Assert.assertEquals(users.size(), 4);
-        users.put(email, user);
+        users.put(user);
         Assert.assertEquals(users.size(), 5);
     }
 }

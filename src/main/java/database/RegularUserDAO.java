@@ -14,8 +14,8 @@ public final class RegularUserDAO extends DataAcessObject<String, RegularUser> {
         return super.get(key);
     }
 
-    public RegularUser put(final String key, final RegularUser value) {
-        return super.put(key, value);
+    public RegularUser put(final RegularUser value) {
+        return super.put(value, value.getEmail());
     }
 
     public RegularUser remove(final String key) {
