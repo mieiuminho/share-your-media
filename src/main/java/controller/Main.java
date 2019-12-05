@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -21,14 +22,18 @@ public final class Main {
     @FXML
     private Button addFriendsButton;
 
-    public void logout() {
-        helper.redirectTo("welcome");
-    }
-
-    public void addFriends() {
+    @FXML
+    void addFriends(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Login Error");
         alert.setHeaderText("Invalid credentials");
         alert.showAndWait();
     }
+
+    @FXML
+    void logout(ActionEvent event) {
+        model.logout();
+        helper.redirectTo("welcome");
+    }
+
 }
