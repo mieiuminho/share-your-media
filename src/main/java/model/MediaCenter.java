@@ -72,7 +72,7 @@ public final class MediaCenter {
     public void registerRegularUser(final String email, final String name, final String password)
             throws DuplicatedUserException {
         if (!this.users.containsKey(email)) {
-            this.users.put(email, new RegularUser(email, name, password));
+            this.users.put(new RegularUser(email, name, password));
         } else
             throw new DuplicatedUserException("This email is already registered with another user!");
     }
@@ -80,7 +80,7 @@ public final class MediaCenter {
     public void registerAdminUser(final String email, final String name, final String password)
             throws DuplicatedUserException {
         if (!this.admins.containsKey(email)) {
-            this.admins.put(email, new AdminUser(email, name, password));
+            this.admins.put(new AdminUser(email, name, password));
         } else
             throw new DuplicatedUserException("This email is already registered with another admin!");
     }

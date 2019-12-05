@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Map.entry;
 
@@ -74,14 +72,14 @@ public abstract class DataAcessObject<K, O> {
      * @param key
      * @return
      */
-    public boolean containsKey(final Object... key) {
+    public boolean containsKey(final K... key) {
         Connection connection = DataBase.getConnection();
         boolean r = false;
 
         try {
             String stm = "SELECT * FROM " + this.table + " WHERE ";
             int x = 0;
-            for (Object ignored : key) {
+            for (K ignored : key) {
                 if (x != 0)
                     stm += " AND ";
 
@@ -90,7 +88,7 @@ public abstract class DataAcessObject<K, O> {
 
             PreparedStatement pst = connection.prepareStatement(stm);
             x = 1;
-            for (Object k : key) {
+            for (K k : key) {
                 this.setValue(pst, x++, k);
             }
             ResultSet rs = pst.executeQuery();
@@ -103,16 +101,60 @@ public abstract class DataAcessObject<K, O> {
     }
 
     /**
+     *
+     * @param value
+     * @param index
+     * @return
+     */
+    public Set<O> search(final K value, final int... index) {
+        Set<O> result = new HashSet<>();
+        Connection connection = DataBase.getConnection();
+
+        try {
+            String stm = "SELECT * FROM " + this.table + " WHERE ";
+
+            for (int i = 0; i < index.length; i++) {
+                if (i != 0)
+                    stm += " OR ";
+
+                stm += this.columns.get(index[i]) + " LIKE ? ";
+            }
+
+            PreparedStatement pst = connection.prepareStatement(stm);
+
+            for (int i = 1; i <= index.length; i++) {
+                this.setValue(pst, i, "%" + value.toString() + "%");
+            }
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int length = rs.getMetaData().getColumnCount();
+                List<String> row = new ArrayList<>(length);
+
+                for (int i = 1; i <= length; i++)
+                    row.add(rs.getString(i));
+
+                result.add((O) token.fromRow(row));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
      * @param key
      * @return
      */
-    public O get(final Object... key) {
+    public O get(final K... key) {
         Connection connection = DataBase.getConnection();
         O o = null;
         try {
             String stm = "SELECT * FROM " + this.table + " WHERE ";
             int x = 0;
-            for (Object ignored : key) {
+            for (K ignored : key) {
                 if (x != 0)
                     stm += " AND ";
 
@@ -121,7 +163,7 @@ public abstract class DataAcessObject<K, O> {
 
             PreparedStatement pst = connection.prepareStatement(stm);
             x = 1;
-            for (Object k : key) {
+            for (K k : key) {
                 this.setValue(pst, x++, k);
             }
             ResultSet rs = pst.executeQuery();
@@ -147,13 +189,13 @@ public abstract class DataAcessObject<K, O> {
      * @param value
      * @return
      */
-    public O put(final Object value, final Object... key) {
+    public O put(final O value, final K... key) {
         Connection connection = DataBase.getConnection();
         try {
             O result = this.get(key);
             String stm = "DELETE FROM " + this.table + " WHERE ";
             int x = 0;
-            for (Object ignored : key) {
+            for (K ignored : key) {
                 if (x != 0)
                     stm += " AND ";
 
@@ -162,7 +204,7 @@ public abstract class DataAcessObject<K, O> {
 
             PreparedStatement pst = connection.prepareStatement(stm);
             x = 1;
-            for (Object k : key) {
+            for (K k : key) {
                 this.setValue(pst, x++, k);
             }
             pst.executeUpdate();
@@ -196,7 +238,7 @@ public abstract class DataAcessObject<K, O> {
      * @param key
      * @return
      */
-    public O remove(final Object... key) {
+    public O remove(final K... key) {
         Connection connection = DataBase.getConnection();
         O o = null;
 

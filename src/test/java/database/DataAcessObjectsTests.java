@@ -8,6 +8,7 @@ import util.Passwords;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class DataAcessObjectsTests {
     private static AdminUserDAO admins = new AdminUserDAO();
@@ -89,6 +90,15 @@ public class DataAcessObjectsTests {
     @Test
     public void emptyTest() {
         Assert.assertFalse(users.isEmpty());
+    }
+
+    @Test
+    public void searchTest() {
+        Set<RegularUser> usersComN = users.searchByName("N");
+        for (RegularUser u : usersComN) {
+            System.out.println(u.getName());
+        }
+        Assert.assertEquals(2, usersComN.size());
     }
 
     @Test
