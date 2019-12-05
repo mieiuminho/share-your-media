@@ -14,68 +14,72 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.cell.TextFieldTableCell?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Main">
    <children>
       <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="Account">
+         <menus>
+            <Menu mnemonicParsing="false" text="Account">
                <items>
                   <MenuItem mnemonicParsing="false" text="Settings" />
                   <MenuItem fx:id="logoutMenuItem" mnemonicParsing="false" onAction="#logout" text="Logout" />
                </items></Menu>
-        </menus>
+         </menus>
       </MenuBar>
       <SplitPane dividerPositions="0.3" layoutY="29.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <TabPane prefHeight="648.0" prefWidth="306.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <tabs>
-                      <Tab text="Playlists">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <tabs>
+                        <Tab text="Playlists">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <ListView prefHeight="735.0" prefWidth="379.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
-                        </content>
-                      </Tab>
-                      <Tab text="Friends">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           </content>
+                        </Tab>
+                        <Tab text="Friends">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <SplitPane dividerPositions="0.5770804911323328" orientation="VERTICAL" prefHeight="735.0" prefWidth="379.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                      <items>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                       <items>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                              <children>
                                                 <ListView prefHeight="615.0" prefWidth="306.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                              </children>
                                           </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="133.0" prefWidth="377.0">
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="133.0" prefWidth="377.0">
                                              <children>
                                                 <Button fx:id="addFriendsButton" layoutX="247.0" layoutY="14.0" mnemonicParsing="false" onAction="#addFriends" text="Add new friends" />
                                              </children>
                                           </AnchorPane>
-                                      </items>
+                                       </items>
                                     </SplitPane>
                                  </children>
                               </AnchorPane>
-                        </content>
-                      </Tab>
+                           </content>
+                        </Tab>
                         <Tab text="Upload">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <HBox prefHeight="735.0" prefWidth="379.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
@@ -93,43 +97,75 @@
                                     </HBox>
                                  </children>
                               </AnchorPane>
-                          </content>
+                           </content>
                         </Tab>
-                    </tabs>
+                     </tabs>
                   </TabPane>
                </children></AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <SplitPane dividerPositions="0.55" orientation="VERTICAL" prefHeight="648.0" prefWidth="719.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <items>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <TableView prefHeight="417.0" prefWidth="889.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <columns>
-                                  <TableColumn minWidth="300.0" prefWidth="75.0" text="Title" />
-                                  <TableColumn minWidth="300.0" prefWidth="75.0" text="Artist" />
-                                    <TableColumn minWidth="250.0" prefWidth="75.0" text="Tags" />
-                                </columns>
+                              <TableView fx:id="musicTable" layoutY="29.0" prefHeight="388.0" prefWidth="889.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+                                 <columns>
+                                    <TableColumn fx:id="titleColumn" editable="true" minWidth="200.0" onEditCommit="#changeCellTitle" prefWidth="200.0" sortable="true" text="Title">
+                                       <cellValueFactory>
+                                          <PropertyValueFactory property="name" />
+                                       </cellValueFactory>
+                                       <cellFactory>
+                                          <TextFieldTableCell fx:factory="forTableColumn" />
+                                       </cellFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="artistTableColumn" editable="true" minWidth="180.0" onEditCommit="#changeCellArtist" prefWidth="180.0" sortable="true" text="Artist">
+                                       <cellValueFactory>
+                                          <PropertyValueFactory property="artist" />
+                                       </cellValueFactory>
+                                       <cellFactory>
+                                          <TextFieldTableCell fx:factory="forTableColumn" />
+                                       </cellFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="tagsTableColumn1" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                       <cellValueFactory>
+                                          <PropertyValueFactory property="tag1" />
+                                       </cellValueFactory>
+                                       <cellFactory>
+                                          <TextFieldTableCell fx:factory="forTableColumn" />
+                                       </cellFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="tagsTableColumn2" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                       <cellValueFactory>
+                                          <PropertyValueFactory property="tag2" />
+                                       </cellValueFactory>
+                                       <cellFactory>
+                                          <TextFieldTableCell fx:factory="forTableColumn" />
+                                       </cellFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="tagsTableColumn3" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                       <cellValueFactory>
+                                          <PropertyValueFactory property="tag3" />
+                                       </cellValueFactory>
+                                       <cellFactory>
+                                          <TextFieldTableCell fx:factory="forTableColumn" />
+                                       </cellFactory>
+                                    </TableColumn>
+                                 </columns>
                               </TableView>
-                           </children></AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                              <TextField fx:id="searchBar" layoutX="103.0" layoutY="1.0" onAction="#search" prefHeight="27.0" prefWidth="536.0" promptText="Type a Song, Artist or Tag" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <VBox prefHeight="302.0" prefWidth="889.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <VBox layoutX="-7.0" maxHeight="2000.0" prefHeight="341.0" prefWidth="889.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <StackPane prefHeight="150.0" prefWidth="200.0">
+                                    <StackPane fx:id="videoPlayerParent" alignment="CENTER" maxHeight="2000.0" prefHeight="300.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/album_cover_sample.jpg" />
-                                             </image>
-                                          </ImageView>
+                                          <MediaView fx:id="videoPlayer" fitHeight="${videoPlayerParent.height}" fitWidth="${videoPlayerParent.width}" managed="false" StackPane.alignment="CENTER">
+                                             </MediaView>
                                        </children>
-                                       <padding>
-                                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                                       </padding>
                                     </StackPane>
-                                    <Region prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                                    <StackPane prefHeight="150.0" prefWidth="200.0">
+                                    <StackPane prefHeight="70.0" prefWidth="200.0">
                                        <children>
                                           <ProgressBar maxHeight="10.0" maxWidth="700.0" minHeight="10.0" minWidth="50.0" prefHeight="10.0" prefWidth="600.0" progress="0.5">
                                              <effect>
@@ -144,7 +180,7 @@
                                     <StackPane>
                                        <children>
                                           <ToolBar StackPane.alignment="CENTER">
-                                            <items>
+                                             <items>
                                                 <Pane HBox.hgrow="ALWAYS" />
                                                 <Button mnemonicParsing="false" text="⊴">
                                                    <padding>
@@ -154,7 +190,7 @@
                                                       <Font size="18.0" />
                                                    </font>
                                                 </Button>
-                                                <Button mnemonicParsing="false" text="▸">
+                                                <Button fx:id="playButton" mnemonicParsing="false" onAction="#play" text="▸">
                                                    <padding>
                                                       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                                    </padding>
@@ -171,7 +207,7 @@
                                                    </font>
                                                 </Button>
                                                 <Pane HBox.hgrow="ALWAYS" />
-                                            </items>
+                                             </items>
                                           </ToolBar>
                                        </children>
                                     </StackPane>
@@ -179,11 +215,11 @@
                               </VBox>
                            </children>
                         </AnchorPane>
-                    </items>
+                     </items>
                   </SplitPane>
                </children>
             </AnchorPane>
-        </items>
+         </items>
       </SplitPane>
    </children>
 </AnchorPane>
