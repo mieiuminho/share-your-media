@@ -32,7 +32,7 @@
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <StackPane>
                      <children>
-                        <TextField promptText="email" />
+                        <TextField fx:id="emailTextField" promptText="email" />
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
@@ -40,7 +40,7 @@
                   </StackPane>
                   <StackPane layoutX="10.0" layoutY="10.0">
                      <children>
-                        <PasswordField promptText="password" />
+                        <PasswordField fx:id="passwordPasswordField" promptText="password" />
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
@@ -48,7 +48,7 @@
                   </StackPane>
                   <StackPane>
                      <children>
-                        <Button mnemonicParsing="false" text="Login" />
+                        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" text="Login" />
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />

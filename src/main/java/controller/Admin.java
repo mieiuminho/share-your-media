@@ -1,7 +1,13 @@
 package controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javafx.event.ActionEvent;
+import javafx.scene.control.MenuItem;
+
 import model.MediaCenter;
 
 public final class Admin {
@@ -14,9 +20,16 @@ public final class Admin {
     }
 
     @FXML
-    private Button backButton;
+    private ResourceBundle resources;
 
-    public void back() {
+    @FXML
+    private URL location;
+
+    @FXML
+    private MenuItem logoutMenuItem;
+
+    @FXML
+    void logout(final ActionEvent event) {
         model.logout();
         helper.redirectTo("welcome");
     }

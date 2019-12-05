@@ -1,7 +1,16 @@
 package controller;
 
+import exceptions.AuthenticationException;
 import javafx.fxml.FXML;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+
 import model.MediaCenter;
 
 public final class Login {
@@ -14,9 +23,44 @@ public final class Login {
     }
 
     @FXML
+    private ResourceBundle resources;
+
+    @FXML
+    private URL location;
+
+    @FXML
+    private TextField emailTextField;
+
+    @FXML
+    private PasswordField passwordPasswordField;
+
+    @FXML
     private Button backButton;
 
-    public void back() {
+    @FXML
+    private Button loginButton;
+
+    @FXML
+    void back(final ActionEvent event) {
         helper.redirectTo("welcome");
+    }
+
+    @FXML
+    void login(final ActionEvent event) {
+        if (model.isAdmin()) {
+            try {
+                model.loginAdmin(emailTextField.getText(), passwordPasswordField.getText());
+                helper.redirectTo("admin");
+            } catch (AuthenticationException e) {
+                helper.error("Authentication Error", e.getMessage());
+            }
+        } else {
+            try {
+                model.loginUser(emailTextField.getText(), passwordPasswordField.getText());
+                helper.redirectTo("main");
+            } catch (AuthenticationException e) {
+                helper.error("Authentication Error", e.getMessage());
+            }
+        }
     }
 }

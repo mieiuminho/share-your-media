@@ -48,20 +48,25 @@ public final class MediaCenter {
         if (this.users.containsKey(email)) {
             if (this.users.get(email).validate(password))
                 this.loggedIn = email;
+            else
+                throw new AuthenticationException("Wrong password!");
         } else
-            throw new AuthenticationException("This user is not registered! \n Please type a valid email!");
+            throw new AuthenticationException("This user is not registered!\n\nPlease type a valid email!");
     }
 
     public void loginAdmin(final String email, final String password) throws AuthenticationException {
         if (this.admins.containsKey(email)) {
             if (this.admins.get(email).validate(password))
                 this.loggedIn = email;
+            else
+                throw new AuthenticationException("Wrong password!");
         } else
-            throw new AuthenticationException("This user is not registered! \n Please type a valid email!");
+            throw new AuthenticationException("This user is not registered!\n\nPlease type a valid email!");
     }
 
     public void logout() {
         this.loggedIn = null;
+        this.isAdmin = false;
     }
 
     public void registerRegularUser(final String email, final String name, final String password)
