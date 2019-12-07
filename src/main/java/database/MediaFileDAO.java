@@ -1,10 +1,10 @@
 package database;
 
-import model.AdminUser;
 import model.MediaFile;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.Collection;
 
 public final class MediaFileDAO extends DataAcessObject<String, MediaFile> {
     public MediaFileDAO() {
@@ -37,5 +37,10 @@ public final class MediaFileDAO extends DataAcessObject<String, MediaFile> {
 
     public MediaFile remove(final String name, final String artist) {
         return super.remove(name, artist);
+    }
+
+    // TODO Temos de definir este metodo. Temos de o ter para percorrer os Media Files
+    public Collection<MediaFile> values() {
+        return null;
     }
 }

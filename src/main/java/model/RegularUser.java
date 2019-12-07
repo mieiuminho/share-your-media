@@ -2,12 +2,15 @@ package model;
 
 import database.DataClass;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.HashMap;
+import java.util.List;
 
 public final class RegularUser extends User implements DataClass<String> {
     private Set<String> collection;
+    private Map<String, Playlist> playlists;
 
     public RegularUser() {
         super();
@@ -20,6 +23,7 @@ public final class RegularUser extends User implements DataClass<String> {
     public RegularUser(final String email, final String name, final String input) {
         super(email, name, input);
         this.collection = new TreeSet<>();
+        this.playlists = new HashMap<>();
     }
 
     public RegularUser(final List<String> values) {
@@ -50,5 +54,9 @@ public final class RegularUser extends User implements DataClass<String> {
 
         for (String music : collection)
             this.collection.add(music);
+    }
+
+    public void addPlaylist(final String playListName, final Playlist playlist) {
+        this.playlists.put(playListName, playlist);
     }
 }

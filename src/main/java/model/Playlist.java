@@ -21,8 +21,10 @@ public final class Playlist {
         this.name = name;
         this.creator = creator;
         this.criteria = criteria;
-        // TODO: Não vamos querer criar o Set vazio. Podíamos depoir chamar aqui as funções que geram as playlists de
-        // acordo com o critério pedido pelo utilizador.
         this.mediafiles = new HashSet<>();
+    }
+
+    public void addMediaFile(final String mediaFileName) {
+        this.mediafiles.add(mediaFileName);
     }
 }

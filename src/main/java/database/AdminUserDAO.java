@@ -1,7 +1,6 @@
 package database;
 
 import model.AdminUser;
-import model.RegularUser;
 
 import java.util.Arrays;
 import java.util.Set;

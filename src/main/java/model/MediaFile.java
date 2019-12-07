@@ -9,7 +9,8 @@ public final class MediaFile implements DataClass<String> {
     private String name;
     private String artist;
     // TODO: Falta ver as tabelas para as categorias e uploaders
-    private Set<String> categories;
+    private Set<String> defaultCategories;
+    private Map<String, Set<String>> customCategories;
     private Set<String> uploaders;
 
     /**
@@ -24,7 +25,8 @@ public final class MediaFile implements DataClass<String> {
             final String uploader) {
         this.name = name;
         this.artist = artist;
-        this.categories = new HashSet<>(categories);
+        this.defaultCategories = new HashSet<>(categories);
+        this.customCategories = new HashMap<>();
         this.uploaders = new HashSet<>();
         this.uploaders.add(uploader);
     }
@@ -60,8 +62,22 @@ public final class MediaFile implements DataClass<String> {
      *
      * @return MediaFile's categories.
      */
-    public Set<String> getCategories() {
-        return this.categories;
+    public Set<String> getDefaultCategories() {
+        return this.defaultCategories;
+    }
+    /**
+     * Provides, if exists, a user's categories for a Media Files. If the user hasn't set his own categories, returns
+     * the default.
+     *
+     * @return A user's custom Media Files categories
+     */
+    public Set<String> getCustomCategories(final String username) {
+
+        if (this.customCategories.containsKey(username)) {
+            return this.customCategories.get(username);
+        } else {
+            return this.defaultCategories;
+        }
     }
 
     /**
@@ -97,7 +113,7 @@ public final class MediaFile implements DataClass<String> {
      * @param categories Desired categories.
      */
     public void setCategories(final Set<String> categories) {
-        this.categories = new HashSet<>(categories);
+        this.defaultCategories = new HashSet<>(categories);
     }
 
     /**
@@ -121,17 +137,37 @@ public final class MediaFile implements DataClass<String> {
     }
 
     /**
-     * Change MediaFile's categories.
+     * Change MediaFile's default categories.
      *
      * @param newCategorias New categories.
      */
-    public void bindCategories(final Collection<String> newCategorias) {
-        this.categories.clear();
-        this.categories.addAll(newCategorias);
+    public void bindDefaultCategories(final Collection<String> newCategorias) {
+        this.defaultCategories.clear();
+        this.defaultCategories.addAll(newCategorias);
+    }
+    /**
+     * Change MediaFile's custom categories for a given user.
+     *
+     * @param newCategories New categories.
+     */
+    public void bindCustomCategories(final String username, final Collection<String> newCategories) {
+        this.customCategories.put(username, new HashSet<String>());
+        this.customCategories.get(username).addAll(newCategories);
+    }
+    /**
+     * Checks if a Media File belongs to a given category for a given user. if the User hasn't set his custom
+     * categories, uses the default
+     */
+    public boolean filter(final String username, final String category) {
+        if (this.customCategories.containsKey(username)) {
+            return this.customCategories.get(username).contains(category);
+        } else {
+            return this.defaultCategories.contains(category);
+        }
     }
 
     @Override
-    public DataClass<String> fromRow(List<String> row) {
+    public DataClass<String> fromRow(final List<String> row) {
         return new MediaFile(row);
     }
 
