@@ -28,7 +28,7 @@ build:
 test:
   stage: test
   script:
-    - mvn $MAVEN_CLI_OPTS test -Dtest='!database/*'
+    - mvn $MAVEN_CLI_OPTS test -Dtest='!database/*' jacoco:report
     - cat target/site/jacoco/index.html
 
 format:
