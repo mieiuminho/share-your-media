@@ -19,8 +19,8 @@ USE `ShareYourMedia` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`REGULAR_USER` (
   `email` VARCHAR(255) NOT NULL,
-  `name` VARCHAR(255) NULL,
-  `password` VARCHAR(88) NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(88) NOT NULL,
   `salt` VARCHAR(8) NULL,
   PRIMARY KEY (`email`))
 ENGINE = InnoDB;
@@ -31,9 +31,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`ADMIN_USER` (
   `email` VARCHAR(255) NOT NULL,
-  `name` VARCHAR(255) NULL,
-  `password` VARCHAR(88) NULL,
-  `salt` VARCHAR(8) NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(88) NOT NULL,
+  `salt` VARCHAR(8) NOT NULL,
   PRIMARY KEY (`email`))
 ENGINE = InnoDB;
 
@@ -62,8 +62,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`MEDIAFILE` (
   `name` VARCHAR(255) NOT NULL,
   `artist` VARCHAR(255) NOT NULL,
-  `SERIES_name` VARCHAR(255) NULL,
   `ALBUM_name` VARCHAR(255) NULL,
+  `SERIES_name` VARCHAR(255) NULL,
   PRIMARY KEY (`name`, `artist`),
   INDEX `fk_MEDIAFILE_SEASON1_idx` (`SERIES_name` ASC) VISIBLE,
   INDEX `fk_MEDIAFILE_ALBUM1_idx` (`ALBUM_name` ASC) VISIBLE,
@@ -92,28 +92,6 @@ CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`PLAYLIST` (
   CONSTRAINT `fk_PLAYLIST_REGULAR_USER`
     FOREIGN KEY (`creator`)
     REFERENCES `ShareYourMedia`.`REGULAR_USER` (`email`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ShareYourMedia`.`PLAYLIST_has_MEDIAFILE`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`PLAYLIST_has_MEDIAFILE` (
-  `MEDIAFILE_name` VARCHAR(255) NOT NULL,
-  `PLAYLIST_name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`MEDIAFILE_name`, `PLAYLIST_name`),
-  INDEX `fk_MEDIAFILE_has_PLAYLIST_PLAYLIST1_idx` (`PLAYLIST_name` ASC) VISIBLE,
-  INDEX `fk_MEDIAFILE_has_PLAYLIST_MEDIAFILE1_idx` (`MEDIAFILE_name` ASC) VISIBLE,
-  CONSTRAINT `fk_MEDIAFILE_has_PLAYLIST_MEDIAFILE1`
-    FOREIGN KEY (`MEDIAFILE_name`)
-    REFERENCES `ShareYourMedia`.`MEDIAFILE` (`name`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_MEDIAFILE_has_PLAYLIST_PLAYLIST1`
-    FOREIGN KEY (`PLAYLIST_name`)
-    REFERENCES `ShareYourMedia`.`PLAYLIST` (`name`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -157,6 +135,30 @@ CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`DEFAULT_CATEGORIES` (
   PRIMARY KEY (`MEDIAFILE_name`, `MEDIAFILE_artist`),
   INDEX `fk_DEFAULT_CATEGORIES_MEDIAFILE1_idx` (`MEDIAFILE_name` ASC, `MEDIAFILE_artist` ASC) VISIBLE,
   CONSTRAINT `fk_DEFAULT_CATEGORIES_MEDIAFILE1`
+    FOREIGN KEY (`MEDIAFILE_name` , `MEDIAFILE_artist`)
+    REFERENCES `ShareYourMedia`.`MEDIAFILE` (`name` , `artist`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ShareYourMedia`.`PLAYLIST_has_MEDIAFILE`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`PLAYLIST_has_MEDIAFILE` (
+  `PLAYLIST_name` VARCHAR(255) NOT NULL,
+  `PLAYLIST_creator` VARCHAR(255) NOT NULL,
+  `MEDIAFILE_name` VARCHAR(255) NOT NULL,
+  `MEDIAFILE_artist` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`PLAYLIST_name`, `PLAYLIST_creator`, `MEDIAFILE_name`, `MEDIAFILE_artist`),
+  INDEX `fk_PLAYLIST_has_MEDIAFILE_MEDIAFILE1_idx` (`MEDIAFILE_name` ASC, `MEDIAFILE_artist` ASC) VISIBLE,
+  INDEX `fk_PLAYLIST_has_MEDIAFILE_PLAYLIST1_idx` (`PLAYLIST_name` ASC, `PLAYLIST_creator` ASC) VISIBLE,
+  CONSTRAINT `fk_PLAYLIST_has_MEDIAFILE_PLAYLIST1`
+    FOREIGN KEY (`PLAYLIST_name` , `PLAYLIST_creator`)
+    REFERENCES `ShareYourMedia`.`PLAYLIST` (`name` , `creator`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PLAYLIST_has_MEDIAFILE_MEDIAFILE1`
     FOREIGN KEY (`MEDIAFILE_name` , `MEDIAFILE_artist`)
     REFERENCES `ShareYourMedia`.`MEDIAFILE` (`name` , `artist`)
     ON DELETE NO ACTION
