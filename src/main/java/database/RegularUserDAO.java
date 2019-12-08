@@ -8,7 +8,7 @@ import java.util.Set;
 public final class RegularUserDAO extends DataAcessObject<String, RegularUser> {
 
     public RegularUserDAO() {
-        super(new RegularUser(), "REGULAR_USERS", Arrays.asList(new String[]{"email", "name", "password", "salt"}));
+        super(new RegularUser(), "REGULAR_USER", Arrays.asList("email", "name", "password", "salt"));
     }
 
     public Set<RegularUser> searchByNameOrEmail(final String value) {

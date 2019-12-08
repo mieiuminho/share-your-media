@@ -7,10 +7,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema ShareYourMedia
 -- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema ShareYourMedia
--- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `ShareYourMedia` ;
 USE `ShareYourMedia` ;
 
@@ -18,8 +14,8 @@ USE `ShareYourMedia` ;
 -- Table `ShareYourMedia`.`REGULAR_USER`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`REGULAR_USER` (
-  `email` VARCHAR(255) NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(192) NOT NULL,
+  `name` VARCHAR(192) NOT NULL,
   `password` VARCHAR(88) NOT NULL,
   `salt` VARCHAR(8) NULL,
   PRIMARY KEY (`email`))
@@ -30,8 +26,8 @@ ENGINE = InnoDB;
 -- Table `ShareYourMedia`.`ADMIN_USER`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`ADMIN_USER` (
-  `email` VARCHAR(255) NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(192) NOT NULL,
+  `name` VARCHAR(192) NOT NULL,
   `password` VARCHAR(88) NOT NULL,
   `salt` VARCHAR(8) NOT NULL,
   PRIMARY KEY (`email`))
@@ -42,7 +38,7 @@ ENGINE = InnoDB;
 -- Table `ShareYourMedia`.`SERIES`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`SERIES` (
-  `name` VARCHAR(255) NOT NULL,
+  `name` VARCHAR(192) NOT NULL,
   PRIMARY KEY (`name`))
 ENGINE = InnoDB;
 
@@ -51,7 +47,7 @@ ENGINE = InnoDB;
 -- Table `ShareYourMedia`.`ALBUM`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`ALBUM` (
-  `name` VARCHAR(255) NOT NULL,
+  `name` VARCHAR(192) NOT NULL,
   PRIMARY KEY (`name`))
 ENGINE = InnoDB;
 
@@ -60,10 +56,10 @@ ENGINE = InnoDB;
 -- Table `ShareYourMedia`.`MEDIAFILE`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`MEDIAFILE` (
-  `name` VARCHAR(255) NOT NULL,
-  `artist` VARCHAR(255) NOT NULL,
-  `ALBUM_name` VARCHAR(255) NULL,
-  `SERIES_name` VARCHAR(255) NULL,
+  `name` VARCHAR(192) NOT NULL,
+  `artist` VARCHAR(192) NOT NULL,
+  `ALBUM_name` VARCHAR(192) NULL,
+  `SERIES_name` VARCHAR(192) NULL,
   PRIMARY KEY (`name`, `artist`),
   INDEX `fk_MEDIAFILE_SEASON1_idx` (`SERIES_name` ASC) VISIBLE,
   INDEX `fk_MEDIAFILE_ALBUM1_idx` (`ALBUM_name` ASC) VISIBLE,
@@ -84,8 +80,8 @@ ENGINE = InnoDB;
 -- Table `ShareYourMedia`.`PLAYLIST`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`PLAYLIST` (
-  `name` VARCHAR(255) NOT NULL,
-  `creator` VARCHAR(255) NOT NULL,
+  `name` VARCHAR(192) NOT NULL,
+  `creator` VARCHAR(192) NOT NULL,
   `criteria` VARCHAR(45) NULL,
   PRIMARY KEY (`name`, `creator`),
   INDEX `fk_PLAYLIST_REGULAR_USER_idx` (`creator` ASC) VISIBLE,
@@ -101,9 +97,9 @@ ENGINE = InnoDB;
 -- Table `ShareYourMedia`.`REGULAR_USER_has_MEDIAFILE`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`REGULAR_USER_has_MEDIAFILE` (
-  `REGULAR_USER_email` VARCHAR(255) NOT NULL,
-  `MEDIAFILE_name` VARCHAR(255) NOT NULL,
-  `MEDIAFILE_artist` VARCHAR(255) NOT NULL,
+  `REGULAR_USER_email` VARCHAR(192) NOT NULL,
+  `MEDIAFILE_name` VARCHAR(192) NOT NULL,
+  `MEDIAFILE_artist` VARCHAR(192) NOT NULL,
   `category1` VARCHAR(45) NULL,
   `category2` VARCHAR(45) NULL,
   `category3` VARCHAR(45) NULL,
@@ -127,8 +123,8 @@ ENGINE = InnoDB;
 -- Table `ShareYourMedia`.`DEFAULT_CATEGORIES`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`DEFAULT_CATEGORIES` (
-  `MEDIAFILE_name` VARCHAR(255) NOT NULL,
-  `MEDIAFILE_artist` VARCHAR(255) NOT NULL,
+  `MEDIAFILE_name` VARCHAR(192) NOT NULL,
+  `MEDIAFILE_artist` VARCHAR(192) NOT NULL,
   `category1` VARCHAR(45) NULL,
   `category2` VARCHAR(45) NULL,
   `category3` VARCHAR(45) NULL,
@@ -146,10 +142,10 @@ ENGINE = InnoDB;
 -- Table `ShareYourMedia`.`PLAYLIST_has_MEDIAFILE`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`PLAYLIST_has_MEDIAFILE` (
-  `PLAYLIST_name` VARCHAR(255) NOT NULL,
-  `PLAYLIST_creator` VARCHAR(255) NOT NULL,
-  `MEDIAFILE_name` VARCHAR(255) NOT NULL,
-  `MEDIAFILE_artist` VARCHAR(255) NOT NULL,
+  `PLAYLIST_name` VARCHAR(192) NOT NULL,
+  `PLAYLIST_creator` VARCHAR(192) NOT NULL,
+  `MEDIAFILE_name` VARCHAR(192) NOT NULL,
+  `MEDIAFILE_artist` VARCHAR(192) NOT NULL,
   PRIMARY KEY (`PLAYLIST_name`, `PLAYLIST_creator`, `MEDIAFILE_name`, `MEDIAFILE_artist`),
   INDEX `fk_PLAYLIST_has_MEDIAFILE_MEDIAFILE1_idx` (`MEDIAFILE_name` ASC, `MEDIAFILE_artist` ASC) VISIBLE,
   INDEX `fk_PLAYLIST_has_MEDIAFILE_PLAYLIST1_idx` (`PLAYLIST_name` ASC, `PLAYLIST_creator` ASC) VISIBLE,

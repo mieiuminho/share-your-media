@@ -8,7 +8,7 @@ import java.util.Set;
 public final class AdminUserDAO extends DataAcessObject<String, AdminUser> {
 
     public AdminUserDAO() {
-        super(new AdminUser(), "ADMIN_USERS", Arrays.asList(new String[]{"email", "name", "password", "salt"}));
+        super(new AdminUser(), "ADMIN_USER", Arrays.asList("email", "name", "password", "salt"));
     }
 
     public AdminUser get(final String key) {
