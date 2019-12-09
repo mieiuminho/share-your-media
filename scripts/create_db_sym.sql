@@ -180,7 +180,7 @@ CREATE TRIGGER insert_in_series
     FOR EACH ROW
 BEGIN
     IF new.SERIES_NAME IS NOT NULL THEN
-        INSERT IGNORE INTO ALBUM (name) VALUE (new.SERIES_name);
+        INSERT IGNORE INTO SERIES (name) VALUE (new.SERIES_name);
     END IF;
 END;
 //

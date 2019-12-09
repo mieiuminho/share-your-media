@@ -8,6 +8,8 @@ public final class MediaFile implements DataClass<String> {
 
     private String name;
     private String artist;
+    private String album;
+    private String series;
     // TODO: Falta ver as tabelas para as categorias e uploaders
     private Set<String> defaultCategories;
     private Map<String, Set<String>> customCategories;
@@ -21,22 +23,34 @@ public final class MediaFile implements DataClass<String> {
      * @param categories MediaFile's categories.
      * @param uploader MediaFile's uploader.
      */
-    public MediaFile(final String name, final String artist, final Collection<String> categories,
-            final String uploader) {
+    public MediaFile(final String name, final String artist, final String album, final String series,
+            final Collection<String> categories, final String uploader) {
         this.name = name;
         this.artist = artist;
+        this.album = album;
+        this.series = series;
         this.defaultCategories = new HashSet<>(categories);
         this.customCategories = new HashMap<>();
         this.uploaders = new HashSet<>();
         this.uploaders.add(uploader);
     }
 
-    public MediaFile() {
+    public MediaFile(final String fileName, final String artist, final String album, final String series) {
+        this.name = name;
+        this.artist = artist;
+        this.album = album;
+        this.series = series;
     }
 
+    @SuppressWarnings("checkstyle:MagicNumber")
     public MediaFile(final List<String> values) {
         this.name = values.get(0);
         this.artist = values.get(1);
+        this.album = values.get(2);
+        this.series = values.get(3);
+    }
+
+    public MediaFile() {
     }
 
     /**
@@ -176,6 +190,8 @@ public final class MediaFile implements DataClass<String> {
         List<String> row = new ArrayList<>();
         row.add(this.name);
         row.add(this.artist);
+        row.add(this.album);
+        row.add(this.series);
         return row;
     }
 }

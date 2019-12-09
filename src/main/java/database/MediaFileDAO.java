@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public final class MediaFileDAO extends DataAcessObject<String, MediaFile> {
     public MediaFileDAO() {
-        super(new MediaFile(), "MEDIAFILES", Arrays.asList(new String[]{"name", "artist"}));
+        super(new MediaFile(), "MEDIAFILES", Arrays.asList("name", "artist", "ALBUM_name", "SERIES_name"));
     }
 
     public boolean containsKey(final String name, final String artist) {

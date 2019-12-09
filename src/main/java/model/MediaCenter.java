@@ -146,14 +146,13 @@ public final class MediaCenter {
 
         // TODO Extrair o artista e categorias dos metadados do ficheiro
         String artist = "PLACEHOLDER";
-        List<String> categories = new ArrayList<>();
-        categories.add("PLACEHOLDER1");
-        categories.add("PLACEHOLDER2");
+        String album = "PLACEHOLDER";
+        String series = "PLACEHOLDER";
 
-        MediaFile novoMF = new MediaFile(fileName, artist, categories, this.loggedIn);
+        // TODO: Incluir categorias e uploaders
+        MediaFile novoMF = new MediaFile(fileName, artist, album, series);
 
-        this.mediafiles.put(novoMF, fileName, novoMF.getArtist());
-
+        this.mediafiles.put(novoMF);
     }
 
     public String playMediaFile(final String name) throws IOException {
