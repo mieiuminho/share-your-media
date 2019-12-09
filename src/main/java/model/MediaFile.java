@@ -1,4 +1,4 @@
-  package model;
+package model;
 
 import database.DataClass;
 import javafx.beans.property.SimpleStringProperty;
