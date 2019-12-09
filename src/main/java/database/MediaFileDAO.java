@@ -15,7 +15,7 @@ public final class MediaFileDAO extends DataAcessObject<String, MediaFile> {
     private DefaultCategoriesDAO defaultCategories;
 
     public MediaFileDAO() {
-        super(new MediaFile(), "MEDIAFILES", Arrays.asList("name", "artist", "ALBUM_name", "SERIES_name"));
+        super(new MediaFile(), "MEDIAFILE", Arrays.asList("name", "artist", "ALBUM_name", "SERIES_name"));
         customCategories = new CustomCategoriesDAO();
         defaultCategories = new DefaultCategoriesDAO();
     }
@@ -80,6 +80,6 @@ public final class MediaFileDAO extends DataAcessObject<String, MediaFile> {
 
     // TODO Temos de definir este metodo. Temos de o ter para percorrer os Media Files
     public Collection<MediaFile> values() {
-        return null;
+        return super.values();
     }
 }

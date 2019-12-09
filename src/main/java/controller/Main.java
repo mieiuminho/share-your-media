@@ -1,28 +1,24 @@
 package controller;
 
+import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.ResourceBundle;
-
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import model.MediaFile;
+import java.util.Set;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.collections.ObservableList;
-
-import java.io.File;
 
 import model.MediaCenter;
+import model.MediaFile;
 
 public final class Main {
     private static Helper helper;
@@ -75,14 +71,14 @@ public final class Main {
     }
 
     @FXML
-    public void changeCellArtist(CellEditEvent editedCell) {
+    public void changeCellArtist(final CellEditEvent editedCell) {
         MediaFile m3 = musicTable.getSelectionModel().getSelectedItem();
         m3.setArtist(editedCell.getNewValue().toString());
         // dizer ao model para dar update ao file
     }
 
     @FXML
-    public void changeCellTitle(CellEditEvent editedCell) {
+    public void changeCellTitle(final CellEditEvent editedCell) {
         MediaFile m3 = musicTable.getSelectionModel().getSelectedItem();
         m3.setName(editedCell.getNewValue().toString());
         // dizer ao model para dar update ao file
@@ -92,9 +88,10 @@ public final class Main {
 
     @FXML
     void search() {
-        System.out.println(this.searchBar.getText());
-        // ir ao model buscar as coisas
-        // musicTable.getItems().addAll(modelOutput);
+        Set<MediaFile> result = model.searchMediaByNameOrArtist(this.searchBar.getText());
+        musicTable.getItems().clear();
+//        musicTable.refresh();
+        musicTable.getItems().addAll(result);
         this.searchBar.clear();
         musicTable.setEditable(true);
     }
@@ -104,22 +101,13 @@ public final class Main {
 
         // String fileLocationName = musicTable.getSelectionModel().getSelectedItem().getName();
         // pedir ao model o fileLocation com o filename
-        String fileLocation = "target/classes/images/puffer.mp4";
+        String fileLocation = "target/classes/videos/puffer.mp4";
 
-        try {
-            File file = new File(fileLocation);
-            Media musicFile = new Media(file.toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(musicFile);
-            mediaPlayer.setAutoPlay(true);
-            videoPlayer.setMediaPlayer(mediaPlayer);
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Se calhar ter um alerta?
-            /*
-             * Alert alert = new Alert(Alert.AlertType.ERROR); alert.setTitle("Error Loading");
-             * alert.setHeaderText("Couldnt load the requested media File"); alert.showAndWait();
-             */
-        }
-
+        Media musicFile = new Media(new File(fileLocation).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(musicFile);
+        mediaPlayer.setAutoPlay(true);
+        videoPlayer.setMediaPlayer(mediaPlayer);
+        // e.printStackTrace();
+        // helper.error("Load Fail", "Couldn't play the requested media file.");
     }
 }

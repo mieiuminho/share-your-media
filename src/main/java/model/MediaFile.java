@@ -1,7 +1,6 @@
 package model;
 
 import database.DataClass;
-import javafx.beans.property.SimpleStringProperty;
 
 import java.util.*;
 
@@ -19,13 +18,13 @@ public final class MediaFile implements DataClass<String> {
     /**
      * Constructor
      *
-     * @param name MediaFile's name.
-     * @param artist MediaFile's artist.
+     * @param name       MediaFile's name.
+     * @param artist     MediaFile's artist.
      * @param categories MediaFile's categories.
-     * @param uploader MediaFile's uploader.
+     * @param uploader   MediaFile's uploader.
      */
     public MediaFile(final String name, final String artist, final String album, final String series,
-            final Collection<String> categories, final String uploader) {
+                     final Collection<String> categories, final String uploader) {
         this.name = name;
         this.artist = artist;
         this.album = album;
@@ -72,6 +71,14 @@ public final class MediaFile implements DataClass<String> {
         return this.artist;
     }
 
+    public String getAlbum() {
+        return album;
+    }
+
+    public String getSeries() {
+        return series;
+    }
+
     /**
      * Provides the MediaFile's categories.
      *
@@ -80,6 +87,7 @@ public final class MediaFile implements DataClass<String> {
     public Set<String> getDefaultCategories() {
         return this.defaultCategories;
     }
+
     /**
      * Provides, if exists, a user's categories for a Media Files. If the user hasn't set his own categories, returns
      * the default.
@@ -122,6 +130,14 @@ public final class MediaFile implements DataClass<String> {
         this.artist = artist;
     }
 
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public void setSeries(String series) {
+        this.series = series;
+    }
+
     /**
      * Allows to set the MediaFile's categories.
      *
@@ -160,6 +176,7 @@ public final class MediaFile implements DataClass<String> {
         this.defaultCategories.clear();
         this.defaultCategories.addAll(newCategorias);
     }
+
     /**
      * Change MediaFile's custom categories for a given user.
      *
@@ -169,6 +186,7 @@ public final class MediaFile implements DataClass<String> {
         this.customCategories.put(username, new HashSet<String>());
         this.customCategories.get(username).addAll(newCategories);
     }
+
     /**
      * Checks if a Media File belongs to a given category for a given user. if the User hasn't set his custom
      * categories, uses the default

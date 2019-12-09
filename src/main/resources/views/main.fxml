@@ -17,13 +17,13 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.control.cell.TextFieldTableCell?>
 <?import javafx.scene.effect.Blend?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
@@ -110,7 +110,7 @@
                            <children>
                               <TableView fx:id="musicTable" layoutY="29.0" prefHeight="388.0" prefWidth="889.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
                                  <columns>
-                                    <TableColumn fx:id="titleColumn" editable="true" minWidth="200.0" onEditCommit="#changeCellTitle" prefWidth="200.0" sortable="true" text="Title">
+                                    <TableColumn fx:id="titleColumn" editable="true" onEditCommit="#changeCellArtist" minWidth="200.0" prefWidth="200.0" sortable="true" text="Title">
                                        <cellValueFactory>
                                           <PropertyValueFactory property="name" />
                                        </cellValueFactory>
@@ -118,7 +118,7 @@
                                           <TextFieldTableCell fx:factory="forTableColumn" />
                                        </cellFactory>
                                     </TableColumn>
-                                    <TableColumn fx:id="artistTableColumn" editable="true" minWidth="180.0" onEditCommit="#changeCellArtist" prefWidth="180.0" sortable="true" text="Artist">
+                                    <TableColumn fx:id="artistColumn" editable="true" onEditCommit="#changeCellArtist" minWidth="180.0" prefWidth="180.0" sortable="true" text="Artist">
                                        <cellValueFactory>
                                           <PropertyValueFactory property="artist" />
                                        </cellValueFactory>
@@ -126,25 +126,33 @@
                                           <TextFieldTableCell fx:factory="forTableColumn" />
                                        </cellFactory>
                                     </TableColumn>
-                                    <TableColumn fx:id="tagsTableColumn1" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                     <TableColumn fx:id="albumColumn" editable="true" minWidth="175.0" prefWidth="175.0" text="Album">
+                                         <cellValueFactory>
+                                             <PropertyValueFactory property="album" />
+                                         </cellValueFactory>
+                                         <cellFactory>
+                                             <TextFieldTableCell fx:factory="forTableColumn" />
+                                         </cellFactory>
+                                     </TableColumn>
+                                    <TableColumn fx:id="tags1Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
                                        <cellValueFactory>
-                                          <PropertyValueFactory property="tag1" />
+                                          <PropertyValueFactory property="category1" />
                                        </cellValueFactory>
                                        <cellFactory>
                                           <TextFieldTableCell fx:factory="forTableColumn" />
                                        </cellFactory>
                                     </TableColumn>
-                                    <TableColumn fx:id="tagsTableColumn2" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                    <TableColumn fx:id="tags2Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
                                        <cellValueFactory>
-                                          <PropertyValueFactory property="tag2" />
+                                          <PropertyValueFactory property="category2" />
                                        </cellValueFactory>
                                        <cellFactory>
                                           <TextFieldTableCell fx:factory="forTableColumn" />
                                        </cellFactory>
                                     </TableColumn>
-                                    <TableColumn fx:id="tagsTableColumn3" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                    <TableColumn fx:id="tags3Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
                                        <cellValueFactory>
-                                          <PropertyValueFactory property="tag3" />
+                                          <PropertyValueFactory property="category3" />
                                        </cellValueFactory>
                                        <cellFactory>
                                           <TextFieldTableCell fx:factory="forTableColumn" />
@@ -161,8 +169,23 @@
                                  <children>
                                     <StackPane fx:id="videoPlayerParent" alignment="CENTER" maxHeight="2000.0" prefHeight="300.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <MediaView fx:id="videoPlayer" fitHeight="${videoPlayerParent.height}" fitWidth="${videoPlayerParent.width}" managed="false" StackPane.alignment="CENTER">
-                                             </MediaView>
+                                          <GridPane>
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <MediaView fx:id="videoPlayer" fitHeight="${videoPlayerParent.height}" managed="false" nodeOrientation="INHERIT" GridPane.columnIndex="1" GridPane.rowIndex="1" layoutX="1.0" />
+                                                <Region prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                                <Region prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                             </children>
+                                          </GridPane>
                                        </children>
                                     </StackPane>
                                     <StackPane prefHeight="70.0" prefWidth="200.0">

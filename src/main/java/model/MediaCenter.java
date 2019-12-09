@@ -279,4 +279,12 @@ public final class MediaCenter {
         this.users.get(this.loggedIn).addPlaylist(playListName, novaPlaylist);
 
     }
+
+    public Set<MediaFile> searchMediaByNameOrArtist(final String value) {
+        return this.mediafiles.searchByNameOrArtist(value);
+    }
+
+    public Collection<MediaFile> getMediaFiles() {
+        return this.mediafiles.values();
+    }
 }

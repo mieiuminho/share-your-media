@@ -150,6 +150,7 @@ public abstract class DataAcessObject<K, O> {
     public List<O> find(final K... key) {
         Connection connection = DataBase.getConnection();
         List<O> result = new ArrayList<>();
+
         try {
             String stm = "SELECT * FROM " + this.table + " WHERE ";
             int x = 0;
@@ -165,6 +166,30 @@ public abstract class DataAcessObject<K, O> {
             for (K k : key) {
                 this.setValue(pst, x++, k);
             }
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int length = rs.getMetaData().getColumnCount();
+                List<String> row = new ArrayList<>(length);
+
+                for (int i = 1; i <= length; i++)
+                    row.add(rs.getString(i));
+
+                result.add((O) token.fromRow(row));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    public Collection<O> values() {
+        Connection connection = DataBase.getConnection();
+        Collection<O> result = new ArrayList<>();
+
+        try {
+            PreparedStatement pst = connection.prepareStatement("SELECT * FROM " + this.table);
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {

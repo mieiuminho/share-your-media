@@ -21,8 +21,10 @@ public final class Helper {
     }
 
     private final Map<String, Scene> scenes = Map.ofEntries(//
-            entry("welcome", newScene("welcome.fxml")), entry("login", newScene("login.fxml")),
-            entry("main", newScene("main.fxml")), entry("admin", newScene("admin.fxml")) //
+            entry("welcome", newScene("welcome.fxml")), //
+            entry("login", newScene("login.fxml")), //
+            entry("main", newScene("main.fxml")), //
+            entry("admin", newScene("admin.fxml")) //
     );
 
     public Helper() throws IOException {
