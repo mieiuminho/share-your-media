@@ -3,6 +3,7 @@ package database;
 import model.MediaFile;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.Collection;
 
@@ -13,6 +14,14 @@ public final class MediaFileDAO extends DataAcessObject<String, MediaFile> {
 
     public boolean containsKey(final String name, final String artist) {
         return super.containsKey(name, artist);
+    }
+
+    public List<MediaFile> findByNameAndArtist(final String name, final String artist) {
+        return super.find(name, artist);
+    }
+
+    public List<MediaFile> findByName(final String name) {
+        return super.find(name);
     }
 
     public Set<MediaFile> searchByNameOrArtist(final String value) {

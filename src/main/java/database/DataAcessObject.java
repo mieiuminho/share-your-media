@@ -101,7 +101,6 @@ public abstract class DataAcessObject<K, O> {
     }
 
     /**
-     *
      * @param value
      * @param index
      * @return
@@ -126,6 +125,46 @@ public abstract class DataAcessObject<K, O> {
                 this.setValue(pst, i, "%" + value.toString() + "%");
             }
 
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                int length = rs.getMetaData().getColumnCount();
+                List<String> row = new ArrayList<>(length);
+
+                for (int i = 1; i <= length; i++)
+                    row.add(rs.getString(i));
+
+                result.add((O) token.fromRow(row));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
+     * @param key
+     * @return
+     */
+    public List<O> find(final K... key) {
+        Connection connection = DataBase.getConnection();
+        List<O> result = new ArrayList<>();
+        try {
+            String stm = "SELECT * FROM " + this.table + " WHERE ";
+            int x = 0;
+            for (K ignored : key) {
+                if (x != 0)
+                    stm += " AND ";
+
+                stm += this.columns.get(x++) + " = ? ";
+            }
+
+            PreparedStatement pst = connection.prepareStatement(stm);
+            x = 1;
+            for (K k : key) {
+                this.setValue(pst, x++, k);
+            }
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
