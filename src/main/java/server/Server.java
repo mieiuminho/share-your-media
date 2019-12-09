@@ -10,10 +10,8 @@ import java.util.*;
 
 public final class Server {
 
-    @SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:StaticVariableName"})
-    private static int REQUEST_MAX_SIZE = 100;
-    @SuppressWarnings({"checkstyle:StaticVariableName"})
-    private static int PORT = Integer.parseInt(System.getenv("SYM_SERVER_PORT"));
+    private static final int REQUEST_MAX_SIZE = 100;
+    private static final int PORT = Integer.parseInt(System.getenv("SYM_SERVER_PORT"));
     private ServerSocket socket;
     private BoundedBuffer<String> requests;
     private Map<Integer, PrintWriter> replies;
