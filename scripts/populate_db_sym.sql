@@ -16,18 +16,12 @@ LOAD DATA INFILE 'csv/admins.csv'
     LINES TERMINATED BY '\n'
     IGNORE 1 ROWS;
 
-INSERT INTO SERIES (name)
-values ('FRIENDS');
-
 LOAD DATA INFILE 'csv/episodes.csv'
     INTO TABLE MEDIAFILE
     FIELDS TERMINATED BY ','
     ENCLOSED BY '"'
     LINES TERMINATED BY '\n'
     IGNORE 1 ROWS;
-
-INSERT INTO ALBUM (name)
-values ('Born To Die - The Paradise Edition');
 
 LOAD DATA INFILE 'csv/songs.csv'
     INTO TABLE MEDIAFILE
