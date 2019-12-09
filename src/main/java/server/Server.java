@@ -31,6 +31,7 @@ public final class Server {
 
         try {
             this.socket = new ServerSocket(Server.PORT);
+            System.out.println("Server is up at " + this.socket.getLocalSocketAddress());
         } catch (IOException e) {
             e.printStackTrace();
         }
