@@ -287,4 +287,8 @@ public final class MediaCenter {
     public Collection<MediaFile> getMediaFiles() {
         return this.mediafiles.values();
     }
+
+    public void addMedia(MediaFile media) {
+        this.mediafiles.put(media);
+    }
 }

@@ -71,17 +71,17 @@ public final class Main {
     }
 
     @FXML
-    public void changeCellArtist(final CellEditEvent editedCell) {
-        MediaFile m3 = musicTable.getSelectionModel().getSelectedItem();
-        m3.setArtist(editedCell.getNewValue().toString());
-        // dizer ao model para dar update ao file
+    public void changeCellAlbum(CellEditEvent cellEditEvent) {
+        MediaFile media = musicTable.getSelectionModel().getSelectedItem();
+        media.setAlbum(cellEditEvent.getNewValue().toString());
+        this.model.addMedia(media);
     }
 
     @FXML
-    public void changeCellTitle(final CellEditEvent editedCell) {
-        MediaFile m3 = musicTable.getSelectionModel().getSelectedItem();
-        m3.setName(editedCell.getNewValue().toString());
-        // dizer ao model para dar update ao file
+    public void changeCellSeries(CellEditEvent cellEditEvent) {
+        MediaFile media = musicTable.getSelectionModel().getSelectedItem();
+        media.setSeries(cellEditEvent.getNewValue().toString());
+        this.model.addMedia(media);
     }
 
     // Faltam as tags
@@ -90,7 +90,7 @@ public final class Main {
     void search() {
         Set<MediaFile> result = model.searchMediaByNameOrArtist(this.searchBar.getText());
         musicTable.getItems().clear();
-//        musicTable.refresh();
+        // musicTable.refresh();
         musicTable.getItems().addAll(result);
         this.searchBar.clear();
         musicTable.setEditable(true);
@@ -101,7 +101,8 @@ public final class Main {
 
         // String fileLocationName = musicTable.getSelectionModel().getSelectedItem().getName();
         // pedir ao model o fileLocation com o filename
-        String fileLocation = "target/classes/videos/puffer.mp4";
+        // String fileLocation = "target/classes/videos/puffer.mp4";
+        String fileLocation = "target/classes/songs/lanacover.mp3";
 
         Media musicFile = new Media(new File(fileLocation).toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(musicFile);
@@ -110,4 +111,5 @@ public final class Main {
         // e.printStackTrace();
         // helper.error("Load Fail", "Couldn't play the requested media file.");
     }
+
 }

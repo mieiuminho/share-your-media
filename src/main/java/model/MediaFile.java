@@ -18,13 +18,13 @@ public final class MediaFile implements DataClass<String> {
     /**
      * Constructor
      *
-     * @param name       MediaFile's name.
-     * @param artist     MediaFile's artist.
+     * @param name MediaFile's name.
+     * @param artist MediaFile's artist.
      * @param categories MediaFile's categories.
-     * @param uploader   MediaFile's uploader.
+     * @param uploader MediaFile's uploader.
      */
     public MediaFile(final String name, final String artist, final String album, final String series,
-                     final Collection<String> categories, final String uploader) {
+            final Collection<String> categories, final String uploader) {
         this.name = name;
         this.artist = artist;
         this.album = album;

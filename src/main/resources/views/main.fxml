@@ -110,7 +110,7 @@
                            <children>
                               <TableView fx:id="musicTable" layoutY="29.0" prefHeight="388.0" prefWidth="889.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
                                  <columns>
-                                    <TableColumn fx:id="titleColumn" editable="true" onEditCommit="#changeCellArtist" minWidth="200.0" prefWidth="200.0" sortable="true" text="Title">
+                                    <TableColumn fx:id="titleColumn" minWidth="200.0" prefWidth="200.0" sortable="true" text="Title">
                                        <cellValueFactory>
                                           <PropertyValueFactory property="name" />
                                        </cellValueFactory>
@@ -118,7 +118,7 @@
                                           <TextFieldTableCell fx:factory="forTableColumn" />
                                        </cellFactory>
                                     </TableColumn>
-                                    <TableColumn fx:id="artistColumn" editable="true" onEditCommit="#changeCellArtist" minWidth="180.0" prefWidth="180.0" sortable="true" text="Artist">
+                                    <TableColumn fx:id="artistColumn"  minWidth="180.0" prefWidth="180.0" sortable="true" text="Artist">
                                        <cellValueFactory>
                                           <PropertyValueFactory property="artist" />
                                        </cellValueFactory>
@@ -126,7 +126,7 @@
                                           <TextFieldTableCell fx:factory="forTableColumn" />
                                        </cellFactory>
                                     </TableColumn>
-                                     <TableColumn fx:id="albumColumn" editable="true" minWidth="175.0" prefWidth="175.0" text="Album">
+                                     <TableColumn fx:id="albumColumn" editable="true" onEditCommit="#changeCellAlbum" minWidth="175.0" prefWidth="175.0" text="Album">
                                          <cellValueFactory>
                                              <PropertyValueFactory property="album" />
                                          </cellValueFactory>
@@ -134,29 +134,37 @@
                                              <TextFieldTableCell fx:factory="forTableColumn" />
                                          </cellFactory>
                                      </TableColumn>
+                                     <TableColumn fx:id="SeriesColumn" editable="true" onEditCommit="#changeCellSeries" minWidth="175.0" prefWidth="175.0" text="Series">
+                                         <cellValueFactory>
+                                             <PropertyValueFactory property="series" />
+                                         </cellValueFactory>
+                                         <cellFactory>
+                                             <TextFieldTableCell fx:factory="forTableColumn" />
+                                         </cellFactory>
+                                     </TableColumn>
                                     <TableColumn fx:id="tags1Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
-                                       <cellValueFactory>
-                                          <PropertyValueFactory property="category1" />
-                                       </cellValueFactory>
-                                       <cellFactory>
-                                          <TextFieldTableCell fx:factory="forTableColumn" />
-                                       </cellFactory>
+<!--                                       <cellValueFactory>-->
+<!--                                          <PropertyValueFactory property="category1" />-->
+<!--                                       </cellValueFactory>-->
+<!--                                       <cellFactory>-->
+<!--                                          <TextFieldTableCell fx:factory="forTableColumn" />-->
+<!--                                       </cellFactory>-->
                                     </TableColumn>
                                     <TableColumn fx:id="tags2Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
-                                       <cellValueFactory>
-                                          <PropertyValueFactory property="category2" />
-                                       </cellValueFactory>
-                                       <cellFactory>
-                                          <TextFieldTableCell fx:factory="forTableColumn" />
-                                       </cellFactory>
+<!--                                       <cellValueFactory>-->
+<!--                                          <PropertyValueFactory property="category2" />-->
+<!--                                       </cellValueFactory>-->
+<!--                                       <cellFactory>-->
+<!--                                          <TextFieldTableCell fx:factory="forTableColumn" />-->
+<!--                                       </cellFactory>-->
                                     </TableColumn>
                                     <TableColumn fx:id="tags3Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
-                                       <cellValueFactory>
-                                          <PropertyValueFactory property="category3" />
-                                       </cellValueFactory>
-                                       <cellFactory>
-                                          <TextFieldTableCell fx:factory="forTableColumn" />
-                                       </cellFactory>
+<!--                                       <cellValueFactory>-->
+<!--                                          <PropertyValueFactory property="category3" />-->
+<!--                                       </cellValueFactory>-->
+<!--                                       <cellFactory>-->
+<!--                                          <TextFieldTableCell fx:factory="forTableColumn" />-->
+<!--                                       </cellFactory>-->
                                     </TableColumn>
                                  </columns>
                               </TableView>

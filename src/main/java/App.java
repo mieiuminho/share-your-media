@@ -17,6 +17,10 @@ public final class App extends Application {
     @Override
     public void init() throws Exception {
         super.init();
+        Welcome.init(this.helper, this.model);
+        Main.init(this.helper, this.model);
+        Login.init(this.helper, this.model);
+        Admin.init(this.helper, this.model);
     }
 
     @SuppressWarnings("checkstyle:FinalParameters")
@@ -25,10 +29,6 @@ public final class App extends Application {
         stage.setTitle("Share Your Media");
         this.helper.redirectTo("welcome");
         stage.show();
-        Welcome.init(this.helper, this.model);
-        Main.init(this.helper, this.model);
-        Login.init(this.helper, this.model);
-        Admin.init(this.helper, this.model);
     }
 
     @Override
