@@ -288,7 +288,7 @@ public final class MediaCenter {
         return this.mediafiles.values();
     }
 
-    public void addMedia(MediaFile media) {
+    public void addMedia(final MediaFile media) {
         this.mediafiles.put(media);
     }
 }

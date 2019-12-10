@@ -130,11 +130,11 @@ public final class MediaFile implements DataClass<String> {
         this.artist = artist;
     }
 
-    public void setAlbum(String album) {
+    public void setAlbum(final String album) {
         this.album = album;
     }
 
-    public void setSeries(String series) {
+    public void setSeries(final String series) {
         this.series = series;
     }
 

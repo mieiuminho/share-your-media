@@ -184,6 +184,10 @@ public abstract class DataAcessObject<K, O> {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public Collection<O> values() {
         Connection connection = DataBase.getConnection();
         Collection<O> result = new ArrayList<>();

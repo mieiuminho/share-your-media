@@ -71,14 +71,14 @@ public final class Main {
     }
 
     @FXML
-    public void changeCellAlbum(CellEditEvent cellEditEvent) {
+    public void changeCellAlbum(final CellEditEvent cellEditEvent) {
         MediaFile media = musicTable.getSelectionModel().getSelectedItem();
         media.setAlbum(cellEditEvent.getNewValue().toString());
         this.model.addMedia(media);
     }
 
     @FXML
-    public void changeCellSeries(CellEditEvent cellEditEvent) {
+    public void changeCellSeries(final CellEditEvent cellEditEvent) {
         MediaFile media = musicTable.getSelectionModel().getSelectedItem();
         media.setSeries(cellEditEvent.getNewValue().toString());
         this.model.addMedia(media);
