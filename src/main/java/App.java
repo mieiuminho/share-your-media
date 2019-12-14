@@ -1,11 +1,17 @@
 import controller.*;
-import javafx.application.Application;
-import javafx.stage.Stage;
 import model.MediaCenter;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 
+import org.apache.logging.log4j.core.util.FileUtils;
+
 public final class App extends Application {
+    private static final String USER_DATA_DIR = System.getenv("SYM_USER_DATA_DIR");
+
     private Helper helper;
     private MediaCenter model;
 
@@ -25,6 +31,7 @@ public final class App extends Application {
 
     @SuppressWarnings("checkstyle:FinalParameters")
     public void start(Stage stage) throws Exception {
+        FileUtils.mkdir(new File(USER_DATA_DIR), true);
         Helper.init(stage);
         stage.setTitle("Share Your Media");
         this.helper.redirectTo("welcome");
@@ -34,6 +41,12 @@ public final class App extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
+        // deleting cache
+        for (File f : new File(USER_DATA_DIR).listFiles()) {
+            if (f.isFile()) {
+                f.delete();
+            }
+        }
     }
 
     @SuppressWarnings("checkstyle:FinalParameters")

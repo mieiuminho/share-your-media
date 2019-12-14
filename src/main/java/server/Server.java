@@ -1,50 +1,59 @@
 package server;
 
-import util.BoundedBuffer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.*;
 
 public final class Server {
-
-    private static final int REQUEST_MAX_SIZE = 100;
+    private static final String HOSTNAME = System.getenv("SYM_SERVER_HOSTNAME");
     private static final int PORT = Integer.parseInt(System.getenv("SYM_SERVER_PORT"));
-    private ServerSocket socket;
-    private BoundedBuffer<String> requests;
-    private Map<Integer, PrintWriter> replies;
 
-    public Server() {
-        this.requests = new BoundedBuffer<>(Server.REQUEST_MAX_SIZE);
-        this.replies = new HashMap<>();
+    private static Logger log = LogManager.getLogger(Server.class);
+
+    private ServerSocket socket;
+
+    private Server() {
     }
 
     public static void main(final String[] ars) {
+        clear();
         new Server().startUp();
     }
 
     public void startUp() {
+        log.debug("Working Directory " + System.getProperty("user.dir"));
 
         try {
-            this.socket = new ServerSocket(Server.PORT);
-            System.out.println("Server is up at " + this.socket.getLocalSocketAddress());
+            this.socket = new ServerSocket();
+            this.socket.bind(new InetSocketAddress(HOSTNAME, PORT));
+            log.info("Server is up at " + this.socket.getLocalSocketAddress());
         } catch (IOException e) {
+            log.fatal(e.getMessage());
             e.printStackTrace();
         }
 
-        int id = 0;
+        int id = 1;
         while (true) {
-
             try {
+                log.info("Waiting for connection...");
                 Socket clientServer = this.socket.accept();
-                new Thread(new Connection(id, clientServer, this.requests, this.replies)).start();
+                new Thread(new Connection(id, clientServer)).start();
+                log.debug("Connection " + id + " started");
             } catch (IOException e) {
+                log.fatal(e.getMessage());
                 e.printStackTrace();
             }
             id++;
-
         }
     }
+
+    public static void clear() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
 }

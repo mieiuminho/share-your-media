@@ -1,79 +1,64 @@
 package server;
 
-import util.BoundedBuffer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.util.Base64;
-import java.util.Map;
 
 public final class Connection implements Runnable {
+    private static final String SERVER_DATA_DIR = System.getenv("SYM_SERVER_DATA_DIR");
+
+    private static Logger log = LogManager.getLogger(Connection.class);
 
     private int id;
     private final Socket socket;
-    private BoundedBuffer<String> requests;
-    private Map<Integer, PrintWriter> replies;
+    private BufferedReader in;
+    private PrintWriter out;
 
-    public Connection(final int id, final Socket socket, final BoundedBuffer<String> requests,
-            final Map<Integer, PrintWriter> replies) {
+    public Connection(final int id, final Socket socket) {
         this.id = id;
         this.socket = socket;
-        this.requests = requests;
-        this.replies = replies;
     }
 
     public void run() {
+        log.info("Session " + this.id + " established on " + this.socket.getRemoteSocketAddress());
 
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            this.out = new PrintWriter(this.socket.getOutputStream(), true);
 
-            synchronized (this.replies) {
-                this.replies.put(this.id, new PrintWriter(this.socket.getOutputStream()));
-            }
+            String message;
 
-            String operation;
+            while ((message = this.in.readLine()) != null) {
+                String[] argv = message.split("\\s+");
+                byte[] r;
 
-            while ((operation = in.readLine()) != null) {
-
-                String[] split = operation.split("\\s+");
-
-                if (split[0].toLowerCase().equals("download")) {
-
-                    PrintWriter p = this.replies.get(this.id);
-                    byte[] r = Files.readAllBytes(new File(operation).toPath());
-                    p.println(Base64.getEncoder().encodeToString(r));
-                    p.flush();
-
+                switch (argv[0].toLowerCase()) {
+                    case "download" :
+                        log.trace("(" + this.id + ") downloading " + argv[1] + "...");
+                        r = com.google.common.io.Files.toByteArray(new File(SERVER_DATA_DIR + argv[1]));
+                        this.out.println(Base64.getEncoder().encodeToString(r));
+                        log.info("(" + this.id + ") download " + argv[1] + " done");
+                        break;
+                    case "upload" :
+                        log.trace("(" + this.id + ") uploading " + argv[1] + "...");
+                        com.google.common.io.Files.write(Base64.getDecoder().decode(argv[2]),
+                                new File(SERVER_DATA_DIR + argv[1]));
+                        log.info("(" + this.id + ") upload " + argv[1] + " done");
+                        break;
+                    default :
+                        log.error("Unkown request " + argv[0]);
                 }
-
-                if (split[0].toLowerCase().equals("upload")) {
-
-                    // split[0] -> "upload"
-                    // split[1] -> nome
-                    // split[2] -> ficheiro
-
-                    byte[] r = Base64.getDecoder().decode(split[2]);
-
-                    FileOutputStream fos = new FileOutputStream(System.getenv("SYS_SERVER_DATA_DIR") + split[1]);
-
-                    fos.write(r);
-
-                }
-
-            }
-
-            synchronized (this.replies) {
-                this.replies.remove(this.id);
             }
 
             this.socket.shutdownOutput();
             this.socket.shutdownInput();
             this.socket.close();
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
         }
     }
-
 }

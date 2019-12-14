@@ -18,16 +18,14 @@
 <?import javafx.scene.control.cell.TextFieldTableCell?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Main">
    <children>
@@ -81,20 +79,55 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <HBox prefHeight="735.0" prefWidth="379.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <VBox prefHeight="735.0" prefWidth="379.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <TextField promptText="file path" />
-                                          <Region HBox.hgrow="ALWAYS">
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
-                                          </Region>
-                                          <Button mnemonicParsing="false" text="Add" />
+                                          <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Media Information">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font name="System Bold" size="13.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField fx:id="nameUploadTextField" promptText="Name">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                          <TextField fx:id="artistUploadTextField" promptText="Artist">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                          <TextField fx:id="albumUploadTextField" layoutX="20.0" layoutY="41.0" promptText="Album">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                          <TextField fx:id="seriesUploadTextField" layoutX="20.0" layoutY="77.0" promptText="Series">
+                                             <VBox.margin>
+                                                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                          <HBox prefHeight="735.0" prefWidth="379.0">
+                                             <children>
+                                                <Region HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                </Region>
+                                                <Button fx:id="uploadButton" mnemonicParsing="false" onAction="#upload" text="Upload">
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" right="10.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </HBox>
                                        </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </HBox>
+                                    </VBox>
                                  </children>
                               </AnchorPane>
                            </content>
@@ -108,67 +141,82 @@
                      <items>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <TableView fx:id="musicTable" layoutY="29.0" prefHeight="388.0" prefWidth="889.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
-                                 <columns>
-                                    <TableColumn fx:id="titleColumn" minWidth="200.0" prefWidth="200.0" sortable="true" text="Title">
-                                       <cellValueFactory>
-                                          <PropertyValueFactory property="name" />
-                                       </cellValueFactory>
-                                       <cellFactory>
-                                          <TextFieldTableCell fx:factory="forTableColumn" />
-                                       </cellFactory>
-                                    </TableColumn>
-                                    <TableColumn fx:id="artistColumn"  minWidth="180.0" prefWidth="180.0" sortable="true" text="Artist">
-                                       <cellValueFactory>
-                                          <PropertyValueFactory property="artist" />
-                                       </cellValueFactory>
-                                       <cellFactory>
-                                          <TextFieldTableCell fx:factory="forTableColumn" />
-                                       </cellFactory>
-                                    </TableColumn>
-                                     <TableColumn fx:id="albumColumn" editable="true" onEditCommit="#changeCellAlbum" minWidth="175.0" prefWidth="175.0" text="Album">
-                                         <cellValueFactory>
-                                             <PropertyValueFactory property="album" />
-                                         </cellValueFactory>
-                                         <cellFactory>
-                                             <TextFieldTableCell fx:factory="forTableColumn" />
-                                         </cellFactory>
-                                     </TableColumn>
-                                     <TableColumn fx:id="SeriesColumn" editable="true" onEditCommit="#changeCellSeries" minWidth="175.0" prefWidth="175.0" text="Series">
-                                         <cellValueFactory>
-                                             <PropertyValueFactory property="series" />
-                                         </cellValueFactory>
-                                         <cellFactory>
-                                             <TextFieldTableCell fx:factory="forTableColumn" />
-                                         </cellFactory>
-                                     </TableColumn>
-                                    <TableColumn fx:id="tags1Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
-<!--                                       <cellValueFactory>-->
-<!--                                          <PropertyValueFactory property="category1" />-->
-<!--                                       </cellValueFactory>-->
-<!--                                       <cellFactory>-->
-<!--                                          <TextFieldTableCell fx:factory="forTableColumn" />-->
-<!--                                       </cellFactory>-->
-                                    </TableColumn>
-                                    <TableColumn fx:id="tags2Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
-<!--                                       <cellValueFactory>-->
-<!--                                          <PropertyValueFactory property="category2" />-->
-<!--                                       </cellValueFactory>-->
-<!--                                       <cellFactory>-->
-<!--                                          <TextFieldTableCell fx:factory="forTableColumn" />-->
-<!--                                       </cellFactory>-->
-                                    </TableColumn>
-                                    <TableColumn fx:id="tags3Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
-<!--                                       <cellValueFactory>-->
-<!--                                          <PropertyValueFactory property="category3" />-->
-<!--                                       </cellValueFactory>-->
-<!--                                       <cellFactory>-->
-<!--                                          <TextFieldTableCell fx:factory="forTableColumn" />-->
-<!--                                       </cellFactory>-->
-                                    </TableColumn>
-                                 </columns>
-                              </TableView>
-                              <TextField fx:id="searchBar" layoutX="103.0" layoutY="1.0" onAction="#search" prefHeight="27.0" prefWidth="536.0" promptText="Type a Song, Artist or Tag" />
+                              <VBox prefHeight="417.0" prefWidth="889.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <StackPane>
+                                       <children>
+                                          <TextField fx:id="searchBar" onAction="#search" prefHeight="27.0" prefWidth="536.0" promptText="Type a song or artist name">
+                                             <VBox.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                             </VBox.margin>
+                                          </TextField>
+                                       </children>
+                                    </StackPane>
+                                    <TableView fx:id="musicTable" prefHeight="388.0" prefWidth="889.0">
+                                       <columns>
+                                          <TableColumn fx:id="titleColumn" minWidth="200.0" prefWidth="200.0" sortable="true" text="Title">
+                                             <cellValueFactory>
+                                                <PropertyValueFactory property="name" />
+                                             </cellValueFactory>
+                                             <cellFactory>
+                                                <TextFieldTableCell fx:factory="forTableColumn" />
+                                             </cellFactory>
+                                          </TableColumn>
+                                          <TableColumn fx:id="artistColumn" minWidth="180.0" prefWidth="180.0" sortable="true" text="Artist">
+                                             <cellValueFactory>
+                                                <PropertyValueFactory property="artist" />
+                                             </cellValueFactory>
+                                             <cellFactory>
+                                                <TextFieldTableCell fx:factory="forTableColumn" />
+                                             </cellFactory>
+                                          </TableColumn>
+                                          <TableColumn fx:id="albumColumn" editable="true" minWidth="175.0" onEditCommit="#changeCellAlbum" prefWidth="175.0" text="Album">
+                                               <cellValueFactory>
+                                                   <PropertyValueFactory property="album" />
+                                               </cellValueFactory>
+                                               <cellFactory>
+                                                   <TextFieldTableCell fx:factory="forTableColumn" />
+                                               </cellFactory>
+                                          </TableColumn>
+                                          <TableColumn fx:id="SeriesColumn" editable="true" minWidth="175.0" onEditCommit="#changeCellSeries" prefWidth="175.0" text="Series">
+                                               <cellValueFactory>
+                                                   <PropertyValueFactory property="series" />
+                                               </cellValueFactory>
+                                               <cellFactory>
+                                                   <TextFieldTableCell fx:factory="forTableColumn" />
+                                               </cellFactory>
+                                          </TableColumn>
+                                          <TableColumn fx:id="tags1Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                               <cellValueFactory>
+                                                  <PropertyValueFactory property="defaultCategory1" />
+                                               </cellValueFactory>
+                                               <cellFactory>
+                                                  <TextFieldTableCell fx:factory="forTableColumn" />
+                                               </cellFactory>
+                                          </TableColumn>
+                                          <TableColumn fx:id="tags2Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                               <cellValueFactory>
+                                                  <PropertyValueFactory property="defaultCategory2" />
+                                               </cellValueFactory>
+                                               <cellFactory>
+                                                  <TextFieldTableCell fx:factory="forTableColumn" />
+                                               </cellFactory>
+                                          </TableColumn>
+                                          <TableColumn fx:id="tags3Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                               <cellValueFactory>
+                                                  <PropertyValueFactory property="defaultCategory3" />
+                                               </cellValueFactory>
+                                               <cellFactory>
+                                                  <TextFieldTableCell fx:factory="forTableColumn" />
+                                               </cellFactory>
+                                          </TableColumn>
+                                       </columns>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </TableView>
+                                 </children>
+                              </VBox>
                            </children>
                         </AnchorPane>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -177,23 +225,7 @@
                                  <children>
                                     <StackPane fx:id="videoPlayerParent" alignment="CENTER" maxHeight="2000.0" prefHeight="300.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                        <children>
-                                          <GridPane>
-                                            <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                             <children>
-                                                <MediaView fx:id="videoPlayer" fitHeight="${videoPlayerParent.height}" managed="false" nodeOrientation="INHERIT" GridPane.columnIndex="1" GridPane.rowIndex="1" layoutX="1.0" />
-                                                <Region prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-                                                <Region prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                             </children>
-                                          </GridPane>
+                                          <MediaView fx:id="videoPlayer" fitHeight="${videoPlayerParent.height}" managed="false" nodeOrientation="INHERIT" />
                                        </children>
                                     </StackPane>
                                     <StackPane prefHeight="70.0" prefWidth="200.0">

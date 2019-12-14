@@ -1,18 +1,16 @@
 package controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import exceptions.LackOfPermissions;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -37,6 +35,21 @@ public final class Main {
 
     @FXML
     private MenuItem logoutMenuItem;
+
+    @FXML
+    private TextField nameUploadTextField;
+
+    @FXML
+    private TextField artistUploadTextField;
+
+    @FXML
+    private TextField albumUploadTextField;
+
+    @FXML
+    private TextField seriesUploadTextField;
+
+    @FXML
+    private Button uploadButton;
 
     @FXML
     private Button addFriendsButton;
@@ -98,18 +111,30 @@ public final class Main {
 
     @FXML
     void play(final ActionEvent event) {
+        try {
+            String name = musicTable.getSelectionModel().getSelectedItem().getName();
+            String artist = musicTable.getSelectionModel().getSelectedItem().getArtist();
+            String fileLocation = model.downloadMedia(name, artist);
 
-        // String fileLocationName = musicTable.getSelectionModel().getSelectedItem().getName();
-        // pedir ao model o fileLocation com o filename
-        // String fileLocation = "target/classes/videos/puffer.mp4";
-        String fileLocation = "target/classes/songs/lanacover.mp3";
+            MediaPlayer mediaPlayer = new MediaPlayer(new Media(new File(fileLocation).toURI().toString()));
+            mediaPlayer.setAutoPlay(true);
+            videoPlayer.setMediaPlayer(mediaPlayer);
+        } catch (IOException e) {
+            e.printStackTrace();
+            helper.error("Download error", e.getMessage());
+        }
+    }
 
-        Media musicFile = new Media(new File(fileLocation).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(musicFile);
-        mediaPlayer.setAutoPlay(true);
-        videoPlayer.setMediaPlayer(mediaPlayer);
-        // e.printStackTrace();
-        // helper.error("Load Fail", "Couldn't play the requested media file.");
+    @FXML
+    void upload(final ActionEvent event) {
+        try {
+            model.uploadMedia(nameUploadTextField.getText(), artistUploadTextField.getText(),
+                    albumUploadTextField.getText(), seriesUploadTextField.getText(),
+                    helper.selectFile("Choose media to upload"));
+        } catch (IOException | LackOfPermissions e) {
+            e.printStackTrace();
+            helper.error("Upload error", e.getMessage());
+        }
     }
 
 }

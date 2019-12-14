@@ -27,12 +27,12 @@ public final class UploadersDAO extends DataAcessObject<String, Uploader> {
         return super.put(u, u.getUploader(), u.getName(), u.getArtist());
     }
 
-    public Uploader remove(final String email, final String name, final String artist) {
-        return super.remove(email, name, artist);
+    public Uploader remove(final String uploader, final String name, final String artist) {
+        return super.remove(uploader, name, artist);
     }
 
-    public boolean containsKey(final String email, final String name, final String artist) {
-        return super.containsKey(email, name, artist);
+    public boolean containsKey(final String uploader, final String name, final String artist) {
+        return super.containsKey(uploader, name, artist);
     }
 
 }

@@ -7,8 +7,6 @@ import exceptions.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -18,14 +16,9 @@ import java.util.*;
 
 public final class MediaCenter {
 
-    private static String[] supportedExtensions = {"mp3", "mp4"};
     private static final String HOSTNAME = System.getenv("SYM_SERVER_HOSTNAME");
     private static final int PORT = Integer.parseInt(System.getenv("SYM_SERVER_PORT"));
-
-    public static boolean checkExtension(final String fileName) {
-        return Arrays.stream(supportedExtensions)
-                .anyMatch(e -> e.equals(com.google.common.io.Files.getFileExtension(fileName)));
-    }
+    private static final String USER_DATA_DIR = System.getenv("SYM_USER_DATA_DIR");
 
     private Socket socket;
     private String loggedIn;
@@ -114,28 +107,22 @@ public final class MediaCenter {
             throw new NoSuchUserException();
     }
 
-    public void uploadToMediaCenter(final String fileName, final String filePath, final String groupId)
-            throws ExtensionNotSupported, IOException, LackOfPermissions {
-        // TODO: copiar do filesystem do user para o sítio onde se vai armazenar
-        // Se acharem que esta linha fica demasiado monstruosa temos de restaurar o método checkExtension()
-        if (!checkExtension(fileName)) {
-            throw new ExtensionNotSupported("Couldn't upload file. This kind of file is not supported");
-        }
+    @SuppressWarnings("checkstyle:FinalParameters")
+    public void uploadMedia(final String name, final String artist, String album, String series, final File file)
+            throws IOException, LackOfPermissions {
 
         if (this.loggedIn == null) {
-            throw new LackOfPermissions("You're not currently logged in. This action is not available");
+            throw new LackOfPermissions("You're not currently logged in. This action is not available.");
         }
 
-        this.organize(fileName, groupId);
+        String data = Base64.getEncoder().encodeToString(com.google.common.io.Files.toByteArray(file));
 
-        String data = Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get(filePath)));
-
-        String message = "upload " + fileName + " " + data;
+        String message = "upload " + name.replaceAll(" ", "_") + "+" + artist.replaceAll(" ", "_") + " " + data;
 
         this.socket = new Socket(HOSTNAME, PORT);
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        PrintWriter out = new PrintWriter(socket.getOutputStream());
+        // BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter out = new PrintWriter(this.socket.getOutputStream());
 
         out.println(message);
         out.flush();
@@ -145,41 +132,45 @@ public final class MediaCenter {
         socket.close();
 
         // TODO Extrair o artista e categorias dos metadados do ficheiro
-        String artist = "PLACEHOLDER";
-        String album = "PLACEHOLDER";
-        String series = "PLACEHOLDER";
+        if (album.isBlank()) {
+            album = "PLACEHOLDER";
+        }
 
-        // TODO: Incluir categorias e uploaders
-        MediaFile novoMF = new MediaFile(fileName, artist, album, series);
+        if (series.isBlank()) {
+            series = "PLACEHOLDER";
+        }
 
-        this.mediafiles.put(novoMF);
+        if (this.mediafiles.containsKey(name, artist)) {
+            MediaFile mediaFile = this.mediafiles.get(name, artist);
+            mediaFile.addUploader(this.loggedIn);
+            mediaFile.setAlbum(album);
+            mediaFile.setSeries(series);
+            this.mediafiles.put(mediaFile);
+        } else {
+            this.mediafiles.put(new MediaFile(name, artist, album, series, this.loggedIn));
+        }
     }
 
-    public String playMediaFile(final String name) throws IOException {
+    public String downloadMedia(final String name, final String artist) throws IOException {
+        String fileName = name.replaceAll(" ", "_") + "+" + artist.replaceAll(" ", "_");
 
-        String filePathOnServer = System.getenv("SYM_SERVER_DATA_DIR") + name;
+        if (!new File(USER_DATA_DIR + fileName).isFile()) {
+            this.socket = new Socket(HOSTNAME, PORT);
 
-        this.socket = new Socket(HOSTNAME, PORT);
+            BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        PrintWriter out = new PrintWriter(socket.getOutputStream());
+            out.println("download " + fileName);
 
-        out.println(filePathOnServer);
-        out.flush();
+            String data = in.readLine();
+            com.google.common.io.Files.write(Base64.getDecoder().decode(data), new File(USER_DATA_DIR + fileName));
 
-        String file = in.readLine();
-        byte[] fileInBytes = Base64.getDecoder().decode(file);
+            socket.shutdownOutput();
+            socket.shutdownInput();
+            socket.close();
+        }
 
-        String filePath = System.getenv("SYM_USER_DATA_DIR") + name;
-        FileOutputStream fos = new FileOutputStream(filePath);
-        fos.write(fileInBytes);
-
-        socket.shutdownOutput();
-        socket.shutdownInput();
-        socket.close();
-
-        return filePath;
-
+        return USER_DATA_DIR + fileName;
     }
 
     private void organize(final String fileName, final String groupId) {
@@ -241,7 +232,6 @@ public final class MediaCenter {
     /**
      * Creates a playlist following the given criteria. This playlist belongs and is added to the user currently logged
      * into the system.
-     *
      */
     @SuppressWarnings({"checkstyle:EmptyBlock"})
     public void createPlaylist(final String playListName, final String type, final String argument)

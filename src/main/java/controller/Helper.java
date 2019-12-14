@@ -3,8 +3,10 @@ package controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
@@ -36,6 +38,14 @@ public final class Helper {
 
     public void redirectTo(final String pane) {
         stage.setScene(this.scenes.get(pane));
+    }
+
+    public File selectFile(final String title) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Music Files", "*.mp3"),
+                new FileChooser.ExtensionFilter("Video Files", "*.mp4"));
+        return fileChooser.showOpenDialog(new Stage());
     }
 
     public void error(final String title, final String text) {
