@@ -200,7 +200,7 @@ public final class MediaFile implements DataClass<String> {
      * @param uploader Email of the uploader to remove.
      */
     public void removeUploader(final String uploader) {
-        if (this.uploaders.contains(this.name, this.artist, uploader)) {
+        if (this.uploaders.containsKey(this.name, this.artist, uploader)) {
             this.uploaders.remove(this.name, this.artist, uploader);
         }
     }
