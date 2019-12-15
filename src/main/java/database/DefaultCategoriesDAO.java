@@ -1,14 +1,18 @@
 package database;
 
-import util.DefaultCategories;
-
 import java.util.Arrays;
 
 public final class DefaultCategoriesDAO extends DataAcessObject<String, DefaultCategories> {
 
-    public DefaultCategoriesDAO() {
+    private static DefaultCategoriesDAO singleton = new DefaultCategoriesDAO();
+
+    private DefaultCategoriesDAO() {
         super(new DefaultCategories(), "DEFAULT_CATEGORIES",
                 Arrays.asList("MEDIAFILE_name", "MEDIAFILE_artist", "category1", "category2", "category3"));
+    }
+
+    public static DefaultCategoriesDAO getInstance() {
+        return DefaultCategoriesDAO.singleton;
     }
 
     public DefaultCategories get(final String mediafileName, final String mediafileArtist) {

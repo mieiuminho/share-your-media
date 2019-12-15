@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Set;
 
 public class DataAcessObjectsTests {
-    private static AdminUserDAO admins = new AdminUserDAO();
-    private static RegularUserDAO users = new RegularUserDAO();
-    private static MediaFileDAO mediafiles = new MediaFileDAO();
+    private static AdminUserDAO admins = AdminUserDAO.getInstance();
+    private static RegularUserDAO users = RegularUserDAO.getInstance();
+    private static MediaFileDAO mediafiles = MediaFileDAO.getInstance();
     private static List<AdminUser> adminsList = new ArrayList<>();
     private static List<RegularUser> usersList = new ArrayList<>();
 

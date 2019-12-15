@@ -1,33 +1,36 @@
 package model;
 
 import database.DataClass;
+import database.MediaFileDAO;
+import database.UserCollection;
+import database.UserCollectionDAO;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public final class RegularUser extends User implements DataClass<String> {
-    private Set<String> collection;
+
+    private UserCollectionDAO collection;
     private Map<String, Playlist> playlists;
 
     public RegularUser() {
         super();
+        this.collection = UserCollectionDAO.getInstance();
     }
 
     public RegularUser(final String email, final String name, final String password, final String salt) {
         super(email, name, password, salt);
+        this.collection = UserCollectionDAO.getInstance();
     }
 
     public RegularUser(final String email, final String name, final String input) {
         super(email, name, input);
-        this.collection = new TreeSet<>();
+        this.collection = UserCollectionDAO.getInstance();
         this.playlists = new HashMap<>();
     }
 
     public RegularUser(final List<String> values) {
         super(values);
+        this.collection = UserCollectionDAO.getInstance();
     }
 
     @Override
@@ -40,20 +43,27 @@ public final class RegularUser extends User implements DataClass<String> {
         return "RegularUser: " + super.toString() + '}';
     }
 
-    public Set<String> getCollection() {
-        Set<String> result = new TreeSet<>();
+    public List<MediaFile> getCollection(final MediaFileDAO mf) {
+        List<MediaFile> r = new ArrayList<>();
 
-        for (String music : this.collection)
-            result.add(music);
+        List<UserCollection> col = this.collection.get(this.getEmail());
 
-        return result;
+        for (UserCollection c : col)
+            r.add(c.getMediaFile(mf));
+
+        return r;
     }
 
-    public void setCollection(final Set<String> collection) {
-        this.collection = new TreeSet<>();
+    public void setCollection(final List<MediaFile> collection) {
 
-        for (String music : collection)
-            this.collection.add(music);
+        UserCollection r;
+
+        for (MediaFile m : collection) {
+            this.collection.remove(m.getName(), m.getArtist(), this.getEmail());
+            r = new UserCollection(m.getName(), m.getArtist(), this.getEmail());
+            this.collection.put(r, m.getName(), m.getArtist(), this.getEmail());
+        }
+
     }
 
     public void addPlaylist(final String playListName, final Playlist playlist) {

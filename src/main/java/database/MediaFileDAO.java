@@ -1,8 +1,6 @@
 package database;
 
 import model.MediaFile;
-import util.CustomCategories;
-import util.DefaultCategories;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,13 +9,19 @@ import java.util.Collection;
 
 public final class MediaFileDAO extends DataAcessObject<String, MediaFile> {
 
+    private static MediaFileDAO singleton = new MediaFileDAO();
+
     private CustomCategoriesDAO customCategories;
     private DefaultCategoriesDAO defaultCategories;
 
-    public MediaFileDAO() {
+    private MediaFileDAO() {
         super(new MediaFile(), "MEDIAFILE", Arrays.asList("name", "artist", "ALBUM_name", "SERIES_name"));
-        customCategories = new CustomCategoriesDAO();
-        defaultCategories = new DefaultCategoriesDAO();
+        customCategories = CustomCategoriesDAO.getInstance();
+        defaultCategories = DefaultCategoriesDAO.getInstance();
+    }
+
+    public static MediaFileDAO getInstance() {
+        return MediaFileDAO.singleton;
     }
 
     public boolean containsKey(final String name, final String artist) {
@@ -54,28 +58,6 @@ public final class MediaFileDAO extends DataAcessObject<String, MediaFile> {
 
     public MediaFile remove(final String name, final String artist) {
         return super.remove(name, artist);
-    }
-
-    public List<String> userCategories(final String username, final String mediafileName,
-            final String mediafileArtist) {
-        CustomCategories ct = this.customCategories.get(username, mediafileName, mediafileArtist);
-        return ct.getCategories();
-    }
-
-    public List<String> updateUserCategories(final String username, final String mediafileName,
-            final String mediafileArtist, final String category1, final String category2, final String category3) {
-        CustomCategories ct = new CustomCategories(username, mediafileName, mediafileArtist, category1, category2,
-                category3);
-        return this.customCategories.put(username, mediafileName, mediafileArtist, ct).getCategories();
-    }
-
-    public List<String> getDefaultCategories(final String mediafileName, final String mediafileArtist) {
-        return this.defaultCategories.get(mediafileName, mediafileArtist).getCategories();
-    }
-
-    public List<String> updateDefaultCategories(final String mediafileName, final String mediafileArtist,
-            final DefaultCategories dc) {
-        return this.defaultCategories.put(mediafileName, mediafileArtist, dc).getCategories();
     }
 
     // TODO Temos de definir este metodo. Temos de o ter para percorrer os Media Files

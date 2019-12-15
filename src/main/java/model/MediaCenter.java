@@ -39,9 +39,9 @@ public final class MediaCenter {
     public MediaCenter() {
         this.loggedIn = null;
         this.isAdmin = false;
-        this.admins = new AdminUserDAO();
-        this.users = new RegularUserDAO();
-        this.mediafiles = new MediaFileDAO();
+        this.admins = AdminUserDAO.getInstance();
+        this.users = RegularUserDAO.getInstance();
+        this.mediafiles = MediaFileDAO.getInstance();
     }
 
     public boolean isAdmin() {
@@ -225,7 +225,7 @@ public final class MediaCenter {
             throw new NoSuchMediaFile("The Media File you tried to delete does not exist!");
     }
 
-    public void changeMediaFileCategories(final String mediaFileName, final Set<String> categories)
+    public void changeMediaFileCategories(final String mediaFileName, final List<String> categories)
             throws NoSuchMediaFile, LackOfPermissions {
 
         if (this.loggedIn == null) {
@@ -233,7 +233,7 @@ public final class MediaCenter {
         }
 
         if (this.mediafiles.containsKey(mediaFileName)) {
-            this.mediafiles.get(mediaFileName).bindCustomCategories(this.loggedIn, categories);
+            this.mediafiles.get(mediaFileName).setCustomCategories(this.loggedIn, categories);
         } else
             throw new NoSuchMediaFile("The Media File does not exist!");
     }

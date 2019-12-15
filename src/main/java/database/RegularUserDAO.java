@@ -7,8 +7,16 @@ import java.util.Set;
 
 public final class RegularUserDAO extends DataAcessObject<String, RegularUser> {
 
-    public RegularUserDAO() {
+    private static RegularUserDAO singleton = new RegularUserDAO();
+    private UserCollectionDAO collection;
+
+    private RegularUserDAO() {
         super(new RegularUser(), "REGULAR_USER", Arrays.asList("email", "name", "password", "salt"));
+        this.collection = UserCollectionDAO.getInstance();
+    }
+
+    public static RegularUserDAO getInstance() {
+        return RegularUserDAO.singleton;
     }
 
     public Set<RegularUser> searchByNameOrEmail(final String value) {

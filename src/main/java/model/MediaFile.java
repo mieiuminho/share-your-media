@@ -1,6 +1,12 @@
 package model;
 
+import database.CustomCategoriesDAO;
 import database.DataClass;
+import database.DefaultCategoriesDAO;
+import database.UploadersDAO;
+import database.CustomCategories;
+import database.DefaultCategories;
+import database.Uploader;
 
 import java.util.*;
 
@@ -10,10 +16,9 @@ public final class MediaFile implements DataClass<String> {
     private String artist;
     private String album;
     private String series;
-    // TODO: Falta ver as tabelas para as categorias e uploaders
-    private Set<String> defaultCategories;
-    private Map<String, Set<String>> customCategories;
-    private Set<String> uploaders;
+    private DefaultCategoriesDAO defaultCategories;
+    private CustomCategoriesDAO customCategories;
+    private UploadersDAO uploaders;
 
     /**
      * Constructor
@@ -29,17 +34,19 @@ public final class MediaFile implements DataClass<String> {
         this.artist = artist;
         this.album = album;
         this.series = series;
-        this.defaultCategories = new HashSet<>(categories);
-        this.customCategories = new HashMap<>();
-        this.uploaders = new HashSet<>();
-        this.uploaders.add(uploader);
+        this.defaultCategories = DefaultCategoriesDAO.getInstance();
+        this.customCategories = CustomCategoriesDAO.getInstance();
+        this.uploaders = UploadersDAO.getInstance();
     }
 
-    public MediaFile(final String fileName, final String artist, final String album, final String series) {
+    public MediaFile(final String name, final String artist, final String album, final String series) {
         this.name = name;
         this.artist = artist;
         this.album = album;
         this.series = series;
+        this.defaultCategories = DefaultCategoriesDAO.getInstance();
+        this.customCategories = CustomCategoriesDAO.getInstance();
+        this.uploaders = UploadersDAO.getInstance();
     }
 
     @SuppressWarnings("checkstyle:MagicNumber")
@@ -48,6 +55,9 @@ public final class MediaFile implements DataClass<String> {
         this.artist = values.get(1);
         this.album = values.get(2);
         this.series = values.get(3);
+        this.defaultCategories = DefaultCategoriesDAO.getInstance();
+        this.customCategories = CustomCategoriesDAO.getInstance();
+        this.uploaders = UploadersDAO.getInstance();
     }
 
     public MediaFile() {
@@ -84,8 +94,20 @@ public final class MediaFile implements DataClass<String> {
      *
      * @return MediaFile's categories.
      */
-    public Set<String> getDefaultCategories() {
-        return this.defaultCategories;
+    public List<String> getDefaultCategories() {
+        return this.defaultCategories.get(this.name, this.artist).getCategories();
+    }
+
+    public String getDefaultCategories1() {
+        return this.getDefaultCategories().get(0);
+    }
+
+    public String getDefaultCategories2() {
+        return this.getDefaultCategories().get(1);
+    }
+
+    public String getDefaultCategories3() {
+        return this.getDefaultCategories().get(2);
     }
 
     /**
@@ -94,22 +116,32 @@ public final class MediaFile implements DataClass<String> {
      *
      * @return A user's custom Media Files categories
      */
-    public Set<String> getCustomCategories(final String username) {
-
-        if (this.customCategories.containsKey(username)) {
-            return this.customCategories.get(username);
-        } else {
-            return this.defaultCategories;
-        }
+    public List<String> getCustomCategories(final String username) {
+        return this.customCategories.get(username, this.name, this.artist).getCategories();
     }
 
+    public String getCustomCategory1(final String username) {
+        return this.getCustomCategories(username).get(0);
+    }
+
+    public String getCustomCategory2(final String username) {
+        return this.getCustomCategories(username).get(1);
+    }
+
+    public String getCustomCategory3(final String username) {
+        return this.getCustomCategories(username).get(2);
+    }
     /**
      * Provides the MediaFile's uploaders.
      *
      * @return MediaFile's uploaders.
      */
     public Set<String> getUploaders() {
-        return this.uploaders;
+        List<Uploader> u = this.uploaders.get(this.name, this.artist);
+        Set<String> r = new HashSet<>();
+        for (Uploader up : u)
+            r.add(up.getUploader());
+        return r;
     }
 
     /**
@@ -143,8 +175,10 @@ public final class MediaFile implements DataClass<String> {
      *
      * @param categories Desired categories.
      */
-    public void setCategories(final Set<String> categories) {
-        this.defaultCategories = new HashSet<>(categories);
+    public void setDefaultCategories(final List<String> categories) {
+        DefaultCategories dc = new DefaultCategories(this.name, this.artist, categories.get(0), categories.get(1),
+                categories.get(2));
+        this.defaultCategories.put(this.name, this.artist, dc);
     }
 
     /**
@@ -153,7 +187,11 @@ public final class MediaFile implements DataClass<String> {
      * @param uploaders Desired uploaders.
      */
     public void setUploaders(final Set<String> uploaders) {
-        this.uploaders = new HashSet<>(uploaders);
+        List<Uploader> ups = new ArrayList<>();
+        for (String u : uploaders) {
+            Uploader n = new Uploader(this.name, this.artist, u);
+            this.uploaders.put(n, this.name, this.artist, u);
+        }
     }
 
     /**
@@ -162,19 +200,9 @@ public final class MediaFile implements DataClass<String> {
      * @param uploader Email of the uploader to remove.
      */
     public void removeUploader(final String uploader) {
-        if (this.uploaders.contains(uploader)) {
-            this.uploaders.remove(uploader);
+        if (this.uploaders.contains(this.name, this.artist, uploader)) {
+            this.uploaders.remove(this.name, this.artist, uploader);
         }
-    }
-
-    /**
-     * Change MediaFile's default categories.
-     *
-     * @param newCategorias New categories.
-     */
-    public void bindDefaultCategories(final Collection<String> newCategorias) {
-        this.defaultCategories.clear();
-        this.defaultCategories.addAll(newCategorias);
     }
 
     /**
@@ -182,9 +210,10 @@ public final class MediaFile implements DataClass<String> {
      *
      * @param newCategories New categories.
      */
-    public void bindCustomCategories(final String username, final Collection<String> newCategories) {
-        this.customCategories.put(username, new HashSet<String>());
-        this.customCategories.get(username).addAll(newCategories);
+    public void setCustomCategories(final String username, final List<String> newCategories) {
+        CustomCategories cc = new CustomCategories(username, this.name, this.artist, newCategories.get(0),
+                newCategories.get(1), newCategories.get(2));
+        this.customCategories.put(username, this.name, this.artist, cc);
     }
 
     /**
@@ -192,11 +221,13 @@ public final class MediaFile implements DataClass<String> {
      * categories, uses the default
      */
     public boolean filter(final String username, final String category) {
-        if (this.customCategories.containsKey(username)) {
-            return this.customCategories.get(username).contains(category);
-        } else {
-            return this.defaultCategories.contains(category);
-        }
+        List<String> categories = this.customCategories.get(username, this.name, this.artist).getCategories();
+        return categories.contains(category);
+    }
+
+    public void addUploader(final String email) {
+        Uploader u = new Uploader(this.name, this.artist, email);
+        this.uploaders.put(u);
     }
 
     @Override

@@ -80,9 +80,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ShareYourMedia`.`REGULAR_USER_has_MEDIAFILE`
+-- Table `ShareYourMedia`.`CUSTOM_CATEGORY`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`REGULAR_USER_has_MEDIAFILE` (
+CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`CUSTOM_CATEGORY` (
   `REGULAR_USER_email` VARCHAR(192) NOT NULL,
   `MEDIAFILE_name` VARCHAR(192) NOT NULL,
   `MEDIAFILE_artist` VARCHAR(192) NOT NULL,
@@ -94,6 +94,18 @@ CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`REGULAR_USER_has_MEDIAFILE` (
   INDEX `fk_REGULAR_USER_has_MEDIAFILE_REGULAR_USER1_idx` (`REGULAR_USER_email` ASC) VISIBLE)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `ShareYourMedia`.`UPLOAD`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ShareYourMedia`.`UPLOAD` (
+    `REGULAR_USER_email` VARCHAR(192) NOT NULL,
+    `MEDIAFILE_name` VARCHAR(192) NOT NULL,
+    `MEDIAFILE_artist` VARCHAR(192) NOT NULL,
+    PRIMARY KEY (`REGULAR_USER_email`, `MEDIAFILE_name`, `MEDIAFILE_artist`),
+    INDEX `fk_REGULAR_USER_has_MEDIAFILE1_MEDIAFILE1_idx` (`MEDIAFILE_name` ASC, `MEDIAFILE_artist` ASC) VISIBLE,
+    INDEX `fk_REGULAR_USER_has_MEDIAFILE1_REGULAR_USER1_idx` (`REGULAR_USER_email` ASC) VISIBLE)
+ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `ShareYourMedia`.`DEFAULT_CATEGORIES`
@@ -124,7 +136,7 @@ ENGINE = InnoDB;
 
 DELIMITER //
 
-CREATE TRIGGER insert_in_albums
+CREATE TRIGGER insert_in_album
     BEFORE INSERT
     ON MEDIAFILE
     FOR EACH ROW
@@ -151,3 +163,4 @@ DELIMITER ;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+

@@ -7,8 +7,14 @@ import java.util.Set;
 
 public final class AdminUserDAO extends DataAcessObject<String, AdminUser> {
 
-    public AdminUserDAO() {
+    private static AdminUserDAO singleton = new AdminUserDAO();
+
+    private AdminUserDAO() {
         super(new AdminUser(), "ADMIN_USER", Arrays.asList("email", "name", "password", "salt"));
+    }
+
+    public static AdminUserDAO getInstance() {
+        return AdminUserDAO.singleton;
     }
 
     public AdminUser get(final String key) {
