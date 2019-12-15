@@ -18,8 +18,9 @@
 ## :rocket: Getting Started
 
 This project uses a MySQL database for data persistence. You should have MySQL
-up and running. For setting up a successful connection the environment variables
-must be set.
+up and running. For setting up a successful connection, the environment
+variables must be set. To obtain the songs you have got to have a running server
+instance.
 
 ```bash
 cp .env.sample .env
@@ -31,10 +32,16 @@ environment. Checkout [direnv](https://direnv.net/) for your shell and
 
 ### :hammer: Development
 
-Compile and run the project in a clean build.
+Compile and run the client in a clean build.
 
 ```
 mvn clean compile exec:java
+```
+
+Start a server instance.
+
+```
+mvn exec:java@server
 ```
 
 Running tests.
