@@ -17,7 +17,7 @@ import javafx.scene.media.MediaView;
 import exceptions.LackOfPermissions;
 
 import model.MediaCenter;
-import model.MediaFile;
+import model.MediaTableRow;
 
 public final class Main {
     private static Helper helper;
@@ -68,7 +68,7 @@ public final class Main {
     private Button playButton;
 
     @FXML
-    private TableView<MediaFile> musicTable;
+    private TableView<MediaTableRow> musicTable;
 
     private MediaPlayer mediaPlayer;
 
@@ -85,37 +85,83 @@ public final class Main {
     @FXML
     void logout(final ActionEvent event) {
         model.logout();
-        if (this.mediaPlayer != null) this.mediaPlayer.stop();
+        if (this.mediaPlayer != null)
+            this.mediaPlayer.stop();
+        musicTable.getItems().clear();
         helper.redirectTo("welcome");
     }
 
     @FXML
     public void changeCellAlbum(final CellEditEvent cellEditEvent) {
-        MediaFile media = musicTable.getSelectionModel().getSelectedItem();
-        media.setAlbum(cellEditEvent.getNewValue().toString());
-        this.model.addMedia(media);
+        MediaTableRow row = musicTable.getSelectionModel().getSelectedItem();
+        row.setAlbum(cellEditEvent.getNewValue().toString());
+        try {
+            model.addMedia(row);
+        } catch (LackOfPermissions e) {
+            helper.error("Authentication Error", e.getMessage());
+        }
     }
 
     @FXML
     public void changeCellSeries(final CellEditEvent cellEditEvent) {
-        MediaFile media = musicTable.getSelectionModel().getSelectedItem();
-        media.setSeries(cellEditEvent.getNewValue().toString());
-        this.model.addMedia(media);
+        MediaTableRow row = musicTable.getSelectionModel().getSelectedItem();
+        row.setSeries(cellEditEvent.getNewValue().toString());
+
+        try {
+            model.addMedia(row);
+        } catch (LackOfPermissions e) {
+            helper.error("Authentication Error", e.getMessage());
+        }
+    }
+
+    @FXML
+    public void changeCellCategory1(final CellEditEvent cellEditEvent) {
+        MediaTableRow row = musicTable.getSelectionModel().getSelectedItem();
+        row.setCategory1(cellEditEvent.getNewValue().toString());
+
+        try {
+            model.addMedia(row);
+        } catch (LackOfPermissions e) {
+            helper.error("Authentication Error", e.getMessage());
+        }
+    }
+
+    @FXML
+    public void changeCellCategory2(final CellEditEvent cellEditEvent) {
+        MediaTableRow row = musicTable.getSelectionModel().getSelectedItem();
+        row.setCategory2(cellEditEvent.getNewValue().toString());
+
+        try {
+            model.addMedia(row);
+        } catch (LackOfPermissions e) {
+            helper.error("Authentication Error", e.getMessage());
+        }
+    }
+
+    @FXML
+    public void changeCellCategory3(final CellEditEvent cellEditEvent) {
+        MediaTableRow row = musicTable.getSelectionModel().getSelectedItem();
+        row.setCategory3(cellEditEvent.getNewValue().toString());
+
+        try {
+            model.addMedia(row);
+        } catch (LackOfPermissions e) {
+            helper.error("Authentication Error", e.getMessage());
+        }
     }
 
     @FXML
     void search() {
-        Set<MediaFile> result = model.searchMediaByNameOrArtist(this.searchBar.getText());
+        Set<MediaTableRow> rows = model.searchMediaByNameOrArtist(this.searchBar.getText());
         musicTable.getItems().clear();
-        // musicTable.refresh();
-        musicTable.getItems().addAll(result);
+        musicTable.getItems().addAll(rows);
         this.searchBar.clear();
         musicTable.setEditable(true);
     }
 
     @FXML
     void play(final ActionEvent event) {
-        MediaFile selectedSong = musicTable.getSelectionModel().getSelectedItem();
+        MediaTableRow selectedSong = musicTable.getSelectionModel().getSelectedItem();
 
         if (this.mediaPlayer == null && selectedSong == null) {
             return;

@@ -154,7 +154,7 @@
                                     </StackPane>
                                     <TableView fx:id="musicTable" prefHeight="388.0" prefWidth="889.0">
                                        <columns>
-                                          <TableColumn fx:id="titleColumn" minWidth="200.0" prefWidth="200.0" sortable="true" text="Title">
+                                          <TableColumn fx:id="titleColumn" editable="false" minWidth="200.0" prefWidth="200.0" sortable="true" text="Title">
                                              <cellValueFactory>
                                                 <PropertyValueFactory property="name" />
                                              </cellValueFactory>
@@ -162,7 +162,7 @@
                                                 <TextFieldTableCell fx:factory="forTableColumn" />
                                              </cellFactory>
                                           </TableColumn>
-                                          <TableColumn fx:id="artistColumn" minWidth="180.0" prefWidth="180.0" sortable="true" text="Artist">
+                                          <TableColumn fx:id="artistColumn" editable="false" minWidth="180.0" prefWidth="180.0" sortable="true" text="Artist">
                                              <cellValueFactory>
                                                 <PropertyValueFactory property="artist" />
                                              </cellValueFactory>
@@ -186,25 +186,25 @@
                                                    <TextFieldTableCell fx:factory="forTableColumn" />
                                                </cellFactory>
                                           </TableColumn>
-                                          <TableColumn fx:id="tags1Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                          <TableColumn fx:id="tags1Column" editable="true" minWidth="175.0" onEditCommit="#changeCellCategory1" prefWidth="175.0" text="Tag">
                                                <cellValueFactory>
-                                                  <PropertyValueFactory property="defaultCategory1" />
+                                                  <PropertyValueFactory property="category1" />
                                                </cellValueFactory>
                                                <cellFactory>
                                                   <TextFieldTableCell fx:factory="forTableColumn" />
                                                </cellFactory>
                                           </TableColumn>
-                                          <TableColumn fx:id="tags2Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                          <TableColumn fx:id="tags2Column" editable="true" minWidth="175.0" onEditCommit="#changeCellCategory2" prefWidth="175.0" text="Tag">
                                                <cellValueFactory>
-                                                  <PropertyValueFactory property="defaultCategory2" />
+                                                  <PropertyValueFactory property="category2" />
                                                </cellValueFactory>
                                                <cellFactory>
                                                   <TextFieldTableCell fx:factory="forTableColumn" />
                                                </cellFactory>
                                           </TableColumn>
-                                          <TableColumn fx:id="tags3Column" editable="true" minWidth="175.0" prefWidth="175.0" text="Tag">
+                                          <TableColumn fx:id="tags3Column" editable="true" minWidth="175.0" onEditCommit="#changeCellCategory3" prefWidth="175.0" text="Tag">
                                                <cellValueFactory>
-                                                  <PropertyValueFactory property="defaultCategory3" />
+                                                  <PropertyValueFactory property="category3" />
                                                </cellValueFactory>
                                                <cellFactory>
                                                   <TextFieldTableCell fx:factory="forTableColumn" />

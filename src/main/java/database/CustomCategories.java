@@ -35,6 +35,30 @@ public final class CustomCategories implements DataClass<String> {
     public CustomCategories() {
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getMediafileName() {
+        return mediafileName;
+    }
+
+    public String getMediafileArtist() {
+        return mediafileArtist;
+    }
+
+    public String getCategory1() {
+        return category1;
+    }
+
+    public String getCategory2() {
+        return category2;
+    }
+
+    public String getCategory3() {
+        return category3;
+    }
+
     public List<String> getCategories() {
         List<String> r = new ArrayList<>();
         r.add(this.category1);

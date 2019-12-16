@@ -297,15 +297,32 @@ public final class MediaCenter {
 
     }
 
-    public Set<MediaFile> searchMediaByNameOrArtist(final String value) {
-        return this.mediafiles.searchByNameOrArtist(value);
+    public Set<MediaTableRow> searchMediaByNameOrArtist(final String value) {
+        Set<MediaFile> mediaFiles = this.mediafiles.searchByNameOrArtist(value);
+        Set<MediaTableRow> rows = new TreeSet<>();
+
+        for (MediaFile media : mediaFiles) {
+            if (this.loggedIn != null) {
+                rows.add(media.toTableRow(this.loggedIn));
+            } else {
+                rows.add(media.toTableRow());
+            }
+        }
+
+        return rows;
     }
 
     public Collection<MediaFile> getMediaFiles() {
         return this.mediafiles.values();
     }
 
-    public void addMedia(final MediaFile media) {
-        this.mediafiles.put(media);
+    public void addMedia(final MediaTableRow row) throws LackOfPermissions {
+
+        if (this.loggedIn == null) {
+            throw new LackOfPermissions("You're not currently logged in. This feature is not available");
+        }
+
+        this.mediafiles.put(new MediaFile(row.getName(), row.getArtist(), row.getAlbum(), row.getSeries(),
+                this.loggedIn, row.getCategory1(), row.getCategory2(), row.getCategory3()));
     }
 }

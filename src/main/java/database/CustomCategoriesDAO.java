@@ -19,9 +19,8 @@ public final class CustomCategoriesDAO extends DataAcessObject<String, CustomCat
         return super.get(username, mediafileName, mediafileArtist);
     }
 
-    public CustomCategories put(final String username, final String mediafileName, final String mediafileArtists,
-            final CustomCategories ct) {
-        return super.put(ct, username, mediafileName, mediafileArtists);
+    public CustomCategories put(final CustomCategories ct) {
+        return super.put(ct, ct.getUsername(), ct.getMediafileName(), ct.getMediafileArtist());
     }
 
     public CustomCategories remove(final String username, final String mediafileName, final String mediafileArtist) {
