@@ -32,7 +32,7 @@
                   <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                   <StackPane>
                      <children>
-                        <TextField fx:id="emailTextField" promptText="email" />
+                        <TextField fx:id="emailTextField" promptText="email" onAction="#login"/>
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
@@ -40,7 +40,7 @@
                   </StackPane>
                   <StackPane layoutX="10.0" layoutY="10.0">
                      <children>
-                        <PasswordField fx:id="passwordPasswordField" promptText="password" />
+                        <PasswordField fx:id="passwordPasswordField" promptText="password" onAction="#login" />
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" />
