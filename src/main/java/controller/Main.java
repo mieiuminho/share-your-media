@@ -1,12 +1,22 @@
 package controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-import exceptions.LackOfPermissions;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.parser.mp3.Mp3Parser;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,6 +24,8 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+
+import exceptions.LackOfPermissions;
 
 import model.MediaCenter;
 import model.MediaFile;
@@ -129,8 +141,8 @@ public final class Main {
     void upload(final ActionEvent event) {
         try {
             model.uploadMedia(nameUploadTextField.getText(), artistUploadTextField.getText(),
-                    albumUploadTextField.getText(), seriesUploadTextField.getText(),
-                    helper.selectFile("Choose media to upload"));
+                albumUploadTextField.getText(), seriesUploadTextField.getText(),
+                helper.selectFile("Choose media to upload"));
         } catch (IOException | LackOfPermissions e) {
             e.printStackTrace();
             helper.error("Upload error", e.getMessage());

@@ -4,6 +4,14 @@ import database.AdminUserDAO;
 import database.MediaFileDAO;
 import database.RegularUserDAO;
 import exceptions.*;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.parser.mp3.Mp3Parser;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.*;
 import java.net.Socket;
@@ -108,12 +116,38 @@ public final class MediaCenter {
     }
 
     @SuppressWarnings("checkstyle:FinalParameters")
-    public void uploadMedia(final String name, final String artist, String album, String series, final File file)
+    public void uploadMedia(String name, String artist, String album, String series, final File file)
             throws IOException, LackOfPermissions {
 
         if (this.loggedIn == null) {
             throw new LackOfPermissions("You're not currently logged in. This action is not available.");
         }
+
+        InputStream input = new FileInputStream(file);
+        ContentHandler handler = new DefaultHandler();
+        Metadata metadata = new Metadata();
+        Parser parser = new Mp3Parser();
+        ParseContext parseCtx = new ParseContext();
+        try {
+            parser.parse(input, handler, metadata, parseCtx);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (TikaException e) {
+            e.printStackTrace();
+        }
+        input.close();
+
+        if (name.isBlank())
+            name = metadata.get("title");
+        if (artist.isBlank())
+            artist = metadata.get("xmpDM:artist");
+        if (album.isBlank())
+            album = metadata.get("xmpDM:album");
+
+        List<String> categories = new ArrayList<>(3);
+        categories.add(metadata.get("xmpDM:genre"));
+        categories.add("");
+        categories.add("");
 
         String data = Base64.getEncoder().encodeToString(com.google.common.io.Files.toByteArray(file));
 
@@ -131,15 +165,6 @@ public final class MediaCenter {
         socket.shutdownInput();
         socket.close();
 
-        // TODO Extrair o artista e categorias dos metadados do ficheiro
-        if (album.isBlank()) {
-            album = "PLACEHOLDER";
-        }
-
-        if (series.isBlank()) {
-            series = "PLACEHOLDER";
-        }
-
         if (this.mediafiles.containsKey(name, artist)) {
             MediaFile mediaFile = this.mediafiles.get(name, artist);
             mediaFile.addUploader(this.loggedIn);
@@ -147,7 +172,7 @@ public final class MediaCenter {
             mediaFile.setSeries(series);
             this.mediafiles.put(mediaFile);
         } else {
-            this.mediafiles.put(new MediaFile(name, artist, album, series, this.loggedIn));
+            this.mediafiles.put(new MediaFile(name, artist, album, series, categories, this.loggedIn));
         }
     }
 

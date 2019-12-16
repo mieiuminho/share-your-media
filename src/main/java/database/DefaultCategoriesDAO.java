@@ -19,8 +19,8 @@ public final class DefaultCategoriesDAO extends DataAcessObject<String, DefaultC
         return super.get(mediafileName, mediafileArtist);
     }
 
-    public DefaultCategories put(final String mediafileName, final String mediafileArtist, final DefaultCategories dc) {
-        return super.put(dc, mediafileName, mediafileArtist);
+    public DefaultCategories put(final DefaultCategories dc) {
+        return super.put(dc, dc.getMediafileName(), dc.getMediafileArtist());
     }
 
     public DefaultCategories remove(final String mediafileName, final String mediafileArtist) {

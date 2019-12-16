@@ -32,6 +32,14 @@ public final class DefaultCategories implements DataClass<String> {
     public DefaultCategories() {
     }
 
+    public String getMediafileName() {
+        return this.mediafileName;
+    }
+
+    public String getMediafileArtist() {
+        return this.mediafileArtist;
+    }
+
     public List<String> getCategories() {
         List<String> r = new ArrayList<>();
         r.add(this.category1);
