@@ -84,10 +84,8 @@ public final class Main {
 
     @FXML
     void logout(final ActionEvent event) {
+        this.reset();
         model.logout();
-        if (this.mediaPlayer != null)
-            this.mediaPlayer.stop();
-        musicTable.getItems().clear();
         helper.redirectTo("welcome");
     }
 
@@ -240,5 +238,14 @@ public final class Main {
             e.printStackTrace();
             helper.error("Upload error", e.getMessage());
         }
+    }
+
+    void reset() {
+        this.playingSong = "";
+        this.playButton.setText("▸");
+        if (this.mediaPlayer != null)
+            this.mediaPlayer.stop();
+        this.videoPlayer.setMediaPlayer(null);
+        musicTable.getItems().clear();
     }
 }
