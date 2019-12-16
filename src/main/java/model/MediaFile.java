@@ -62,6 +62,7 @@ public final class MediaFile implements DataClass<String> {
         this.uploaders.put(new Uploader(this.name, this.artist, uploader));
     }
 
+    @SuppressWarnings("checkstyle:ParameterNumber")
     public MediaFile(final String name, final String artist, final String album, final String series,
             final String username, final String category1, final String category2, final String category3) {
         this.name = name;
@@ -142,7 +143,7 @@ public final class MediaFile implements DataClass<String> {
      * @return A user's custom Media Files categories
      */
     public List<String> getCustomCategories(final String username) {
-        if (this.customCategories.containsKey(username)) {
+        if (this.customCategories.containsKey(username, this.name, this.artist)) {
             return this.customCategories.get(username, this.name, this.artist).getCategories();
         } else
             return this.getDefaultCategories();

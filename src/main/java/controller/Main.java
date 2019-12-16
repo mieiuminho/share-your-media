@@ -93,59 +93,75 @@ public final class Main {
 
     @FXML
     public void changeCellAlbum(final CellEditEvent cellEditEvent) {
+        String oldValue = cellEditEvent.getOldValue().toString();
         MediaTableRow row = musicTable.getSelectionModel().getSelectedItem();
         row.setAlbum(cellEditEvent.getNewValue().toString());
+
         try {
             model.addMedia(row);
         } catch (LackOfPermissions e) {
+            row.setAlbum(oldValue);
+            musicTable.refresh();
             helper.error("Authentication Error", e.getMessage());
         }
     }
 
     @FXML
     public void changeCellSeries(final CellEditEvent cellEditEvent) {
+        String oldValue = cellEditEvent.getOldValue().toString();
         MediaTableRow row = musicTable.getSelectionModel().getSelectedItem();
         row.setSeries(cellEditEvent.getNewValue().toString());
 
         try {
             model.addMedia(row);
         } catch (LackOfPermissions e) {
+            row.setSeries(oldValue);
+            musicTable.refresh();
             helper.error("Authentication Error", e.getMessage());
         }
     }
 
     @FXML
     public void changeCellCategory1(final CellEditEvent cellEditEvent) {
+        String oldValue = cellEditEvent.getOldValue().toString();
         MediaTableRow row = musicTable.getSelectionModel().getSelectedItem();
         row.setCategory1(cellEditEvent.getNewValue().toString());
 
         try {
             model.addMedia(row);
         } catch (LackOfPermissions e) {
+            row.setCategory1(oldValue);
+            musicTable.refresh();
             helper.error("Authentication Error", e.getMessage());
         }
     }
 
     @FXML
     public void changeCellCategory2(final CellEditEvent cellEditEvent) {
+        String oldValue = cellEditEvent.getOldValue().toString();
         MediaTableRow row = musicTable.getSelectionModel().getSelectedItem();
         row.setCategory2(cellEditEvent.getNewValue().toString());
 
         try {
             model.addMedia(row);
         } catch (LackOfPermissions e) {
+            row.setCategory2(oldValue);
+            musicTable.refresh();
             helper.error("Authentication Error", e.getMessage());
         }
     }
 
     @FXML
     public void changeCellCategory3(final CellEditEvent cellEditEvent) {
+        String oldValue = cellEditEvent.getOldValue().toString();
         MediaTableRow row = musicTable.getSelectionModel().getSelectedItem();
         row.setCategory3(cellEditEvent.getNewValue().toString());
 
         try {
             model.addMedia(row);
         } catch (LackOfPermissions e) {
+            row.setCategory3(oldValue);
+            musicTable.refresh();
             helper.error("Authentication Error", e.getMessage());
         }
     }

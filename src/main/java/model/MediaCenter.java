@@ -146,6 +146,7 @@ public final class MediaCenter {
         if (album.isBlank())
             album = metadata.get("xmpDM:album");
 
+        @SuppressWarnings("checkstyle:MagicNumber")
         List<String> categories = new ArrayList<>(3);
         categories.add(metadata.get("xmpDM:genre"));
         categories.add("");

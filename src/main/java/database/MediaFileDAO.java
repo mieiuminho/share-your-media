@@ -60,7 +60,7 @@ public final class MediaFileDAO extends DataAcessObject<String, MediaFile> {
         return super.remove(name, artist);
     }
 
-    //TODO: Temos de definir este metodo. Temos de o ter para percorrer os Media Files
+    // TODO: Temos de definir este metodo. Temos de o ter para percorrer os Media Files
     public Collection<MediaFile> values() {
         return super.values();
     }
