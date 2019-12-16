@@ -3,6 +3,7 @@ import model.MediaCenter;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +35,7 @@ public final class App extends Application {
         FileUtils.mkdir(new File(USER_DATA_DIR), true);
         Helper.init(stage);
         stage.setTitle("Share Your Media");
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("images/icon.png")));
         this.helper.redirectTo("welcome");
         stage.show();
     }
