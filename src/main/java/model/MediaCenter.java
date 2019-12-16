@@ -1,9 +1,9 @@
 package model;
 
-import database.AdminUserDAO;
-import database.MediaFileDAO;
-import database.RegularUserDAO;
-import exceptions.*;
+import java.io.*;
+import java.net.Socket;
+import java.util.*;
+
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
@@ -13,9 +13,11 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.io.*;
-import java.net.Socket;
-import java.util.*;
+import database.AdminUserDAO;
+import database.MediaFileDAO;
+import database.RegularUserDAO;
+
+import exceptions.*;
 
 /**
  * TODO: Tínhamos falado em meter as categorias num ENUM TODO: Os critérios para gerar playlists também podem ser uma

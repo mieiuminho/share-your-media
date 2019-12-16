@@ -1,21 +1,10 @@
 package controller;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
-
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.apache.tika.parser.mp3.Mp3Parser;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,6 +70,10 @@ public final class Main {
     @FXML
     private TableView<MediaFile> musicTable;
 
+    private MediaPlayer mediaPlayer;
+
+    private String playingSong;
+
     @FXML
     void addFriends(final ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -92,6 +85,7 @@ public final class Main {
     @FXML
     void logout(final ActionEvent event) {
         model.logout();
+        if (this.mediaPlayer != null) this.mediaPlayer.stop();
         helper.redirectTo("welcome");
     }
 
@@ -109,8 +103,6 @@ public final class Main {
         this.model.addMedia(media);
     }
 
-    // Faltam as tags
-
     @FXML
     void search() {
         Set<MediaFile> result = model.searchMediaByNameOrArtist(this.searchBar.getText());
@@ -123,30 +115,68 @@ public final class Main {
 
     @FXML
     void play(final ActionEvent event) {
-        try {
-            String name = musicTable.getSelectionModel().getSelectedItem().getName();
-            String artist = musicTable.getSelectionModel().getSelectedItem().getArtist();
-            String fileLocation = model.downloadMedia(name, artist);
+        MediaFile selectedSong = musicTable.getSelectionModel().getSelectedItem();
 
-            MediaPlayer mediaPlayer = new MediaPlayer(new Media(new File(fileLocation).toURI().toString()));
-            mediaPlayer.setAutoPlay(true);
-            videoPlayer.setMediaPlayer(mediaPlayer);
-        } catch (IOException e) {
-            e.printStackTrace();
-            helper.error("Download error", e.getMessage());
+        if (this.mediaPlayer == null && selectedSong == null) {
+            return;
         }
+
+        if (this.mediaPlayer != null) {
+            if (selectedSong.getName().equals(playingSong)) {
+                if (this.mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+                    this.mediaPlayer.pause();
+                    this.playButton.setText("▸");
+                } else {
+                    this.mediaPlayer.play();
+                    this.playButton.setText("II");
+                }
+            } else {
+                this.mediaPlayer.stop();
+                String name = selectedSong.getName();
+                String artist = selectedSong.getArtist();
+                try {
+                    String fileLocation = model.downloadMedia(name, artist);
+                    this.mediaPlayer = new MediaPlayer(new Media(new File(fileLocation).toURI().toString()));
+                    this.mediaPlayer.setAutoPlay(true);
+                    this.videoPlayer.setMediaPlayer(mediaPlayer);
+                    this.playingSong = name;
+                    this.playButton.setText("II");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    helper.error("Download error", e.getMessage());
+                }
+            }
+        } else {
+            String name = selectedSong.getName();
+            String artist = selectedSong.getArtist();
+            try {
+                String fileLocation = model.downloadMedia(name, artist);
+                this.mediaPlayer = new MediaPlayer(new Media(new File(fileLocation).toURI().toString()));
+                this.mediaPlayer.setAutoPlay(true);
+                this.videoPlayer.setMediaPlayer(mediaPlayer);
+                this.playingSong = name;
+                this.playButton.setText("II");
+            } catch (IOException e) {
+                e.printStackTrace();
+                helper.error("Download error", e.getMessage());
+            }
+        }
+
+        this.mediaPlayer.setOnEndOfMedia(() -> {
+            this.playingSong = "";
+            this.playButton.setText("▸");
+        });
     }
 
     @FXML
     void upload(final ActionEvent event) {
         try {
             model.uploadMedia(nameUploadTextField.getText(), artistUploadTextField.getText(),
-                albumUploadTextField.getText(), seriesUploadTextField.getText(),
-                helper.selectFile("Choose media to upload"));
+                    albumUploadTextField.getText(), seriesUploadTextField.getText(),
+                    helper.selectFile("Choose media to upload"));
         } catch (IOException | LackOfPermissions e) {
             e.printStackTrace();
             helper.error("Upload error", e.getMessage());
         }
     }
-
 }
