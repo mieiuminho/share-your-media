@@ -1,36 +1,37 @@
 package model;
 
-import database.DataClass;
-import database.MediaFileDAO;
-import database.UserCollection;
-import database.UserCollectionDAO;
+import database.*;
 
 import java.util.*;
 
 public final class RegularUser extends User implements DataClass<String> {
 
     private UserCollectionDAO collection;
-    private Map<String, Playlist> playlists;
+    private PlaylistDAO playlist;
+    // private PlaylistMediafilesDAO playlist;
 
     public RegularUser() {
         super();
         this.collection = UserCollectionDAO.getInstance();
+        this.playlist = PlaylistDAO.getInstance();
     }
 
     public RegularUser(final String email, final String name, final String password, final String salt) {
         super(email, name, password, salt);
         this.collection = UserCollectionDAO.getInstance();
+        this.playlist = PlaylistDAO.getInstance();
     }
 
     public RegularUser(final String email, final String name, final String input) {
         super(email, name, input);
         this.collection = UserCollectionDAO.getInstance();
-        this.playlists = new HashMap<>();
+        this.playlist = PlaylistDAO.getInstance();
     }
 
     public RegularUser(final List<String> values) {
         super(values);
         this.collection = UserCollectionDAO.getInstance();
+        this.playlist = PlaylistDAO.getInstance();
     }
 
     @Override
@@ -66,7 +67,9 @@ public final class RegularUser extends User implements DataClass<String> {
 
     }
 
-    public void addPlaylist(final String playListName, final Playlist playlist) {
-        this.playlists.put(playListName, playlist);
+    public void addPlaylist(final Playlist p) {
+        PlaylistLine pl = new PlaylistLine(p.getName(), p.getCreator(), p.getCriteria());
+        this.playlist.put(pl);
     }
+
 }

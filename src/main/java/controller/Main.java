@@ -12,7 +12,6 @@ import com.mpatric.mp3agic.ID3v2;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -193,8 +192,8 @@ public final class Main {
         musicTable.setEditable(true);
     }
 
-    void updateBar(double currentTime){
-        this.progressBar.progressProperty().setValue(currentTime/mediaPlayer.getTotalDuration().toSeconds());
+    void updateBar(final double currentTime) {
+        this.progressBar.progressProperty().setValue(currentTime / mediaPlayer.getTotalDuration().toSeconds());
     }
 
     @FXML
@@ -223,7 +222,8 @@ public final class Main {
                 try {
                     String fileLocation = model.downloadMedia(name, artist);
                     this.mediaPlayer = new MediaPlayer(new Media(new File(fileLocation).toURI().toString()));
-                    mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> updateBar(newValue.toSeconds()));
+                    mediaPlayer.currentTimeProperty()
+                            .addListener((observable, oldValue, newValue) -> updateBar(newValue.toSeconds()));
                     this.mediaPlayer.setAutoPlay(true);
                     this.videoPlayer.setMediaPlayer(mediaPlayer);
                     this.setAlbumCover(fileLocation);
@@ -240,7 +240,8 @@ public final class Main {
             try {
                 String fileLocation = model.downloadMedia(name, artist);
                 this.mediaPlayer = new MediaPlayer(new Media(new File(fileLocation).toURI().toString()));
-                mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> updateBar(newValue.toSeconds()));
+                mediaPlayer.currentTimeProperty()
+                        .addListener((observable, oldValue, newValue) -> updateBar(newValue.toSeconds()));
                 this.mediaPlayer.setAutoPlay(true);
                 this.videoPlayer.setMediaPlayer(mediaPlayer);
                 this.setAlbumCover(fileLocation);

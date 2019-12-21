@@ -36,8 +36,6 @@ public final class MediaCenter {
     private AdminUserDAO admins;
     private RegularUserDAO users;
     private MediaFileDAO mediafiles;
-    private Map<String, Playlist> albums;
-    private Map<String, Playlist> seasons;
 
     public MediaCenter() {
         this.loggedIn = null;
@@ -201,34 +199,6 @@ public final class MediaCenter {
         return USER_DATA_DIR + fileName;
     }
 
-    private void organize(final String fileName, final String groupId) {
-
-        // referimo-nos nos diagrama a esta operacao como: getExtension()
-        String ext = com.google.common.io.Files.getFileExtension(fileName);
-
-        if (groupId == null) {
-            return;
-        }
-
-        if (ext.equals("mp3")) {
-            if (this.albums.containsKey(groupId)) {
-                this.albums.get(groupId).addMediaFile(fileName);
-            } else {
-                Playlist novoAlbum = new Playlist(groupId, "system", null);
-                novoAlbum.addMediaFile(fileName);
-                this.albums.put(groupId, novoAlbum);
-            }
-        } else if (ext.equals("mp4")) {
-            if (this.seasons.containsKey(groupId)) {
-                this.seasons.get(groupId).addMediaFile(fileName);
-            } else {
-                Playlist novaSeason = new Playlist(groupId, "system", null);
-                novaSeason.addMediaFile(fileName);
-                this.seasons.put(groupId, novaSeason);
-            }
-        }
-    }
-
     public void removeFromMediaCenter(final String mediaFileName) throws NoSuchMediaFile, LackOfPermissions {
         if (this.mediafiles.containsKey(mediaFileName)) {
             MediaFile mf = this.mediafiles.get(mediaFileName);
@@ -279,14 +249,14 @@ public final class MediaCenter {
             case "artist" :
                 for (MediaFile mf : this.mediafiles.values()) {
                     if (mf.getArtist().toLowerCase().equals(argument.toLowerCase()))
-                        novaPlaylist.addMediaFile(mf.getName());
+                        novaPlaylist.addMediaFile(this.mediafiles.get(mf.getName()));
                 }
                 break;
 
             case "category" :
                 for (MediaFile mf : this.mediafiles.values()) {
                     if (mf.filter(this.loggedIn, argument.toLowerCase()))
-                        novaPlaylist.addMediaFile(mf.getName());
+                        novaPlaylist.addMediaFile(this.mediafiles.get(mf.getName()));
                 }
                 break;
             default :
@@ -294,7 +264,7 @@ public final class MediaCenter {
                 break;
         }
 
-        this.users.get(this.loggedIn).addPlaylist(playListName, novaPlaylist);
+        this.users.get(this.loggedIn).addPlaylist(novaPlaylist);
 
     }
 

@@ -1,14 +1,16 @@
 package model;
 
-import java.util.HashSet;
-import java.util.Set;
+import database.PlaylistDAO;
+import database.PlaylistMediafile;
+import database.PlaylistMediafilesDAO;
 
 public final class Playlist {
 
     private String name;
     private String creator;
     private String criteria;
-    private Set<String> mediafiles;
+    private PlaylistDAO playlists;
+    private PlaylistMediafilesDAO mediafiles;
 
     /**
      * Constructor
@@ -21,10 +23,23 @@ public final class Playlist {
         this.name = name;
         this.creator = creator;
         this.criteria = criteria;
-        this.mediafiles = new HashSet<>();
+        this.mediafiles = PlaylistMediafilesDAO.getInstance();
     }
 
-    public void addMediaFile(final String mediaFileName) {
-        this.mediafiles.add(mediaFileName);
+    public String getName() {
+        return this.name;
+    }
+
+    public String getCreator() {
+        return this.creator;
+    }
+
+    public String getCriteria() {
+        return this.criteria;
+    }
+
+    public void addMediaFile(final MediaFile m) {
+        PlaylistMediafile p = new PlaylistMediafile(this.name, this.creator, m.getName(), m.getArtist());
+        this.mediafiles.put(p, p.getPlaylistName(), p.getCreatorEmail(), p.getMediafileName(), p.getMediafileArtist());
     }
 }
