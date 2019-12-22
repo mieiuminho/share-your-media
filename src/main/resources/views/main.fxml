@@ -232,7 +232,7 @@
                                     </StackPane>
                                     <StackPane prefHeight="70.0" prefWidth="200.0">
                                        <children>
-                                          <ProgressBar fx:id="progressBar" maxHeight="10.0" maxWidth="700.0" minHeight="10.0" minWidth="50.0" prefHeight="10.0" prefWidth="600.0" progress="0.5">
+                                          <ProgressBar fx:id="progressBar" maxHeight="10.0" maxWidth="700.0" minHeight="10.0" minWidth="50.0" prefHeight="10.0" prefWidth="600.0" progress="0">
                                              <effect>
                                                 <Blend />
                                              </effect>
